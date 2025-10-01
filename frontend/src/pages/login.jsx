@@ -1,19 +1,47 @@
 
 
 
-import { useState } from 'react';
+import { useState,useContext } from 'react';
 import { Button, TextField, Box, Typography, Paper } from '@mui/material';
+
+import { AuthContext } from '../contexts/AuthContext';
+
+
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = (e) => {
+   const [error, setError] = useState('');
+   const [message, setMessage] =useState('');
+
+
+
+
+   const { login } = useContext(AuthContext);
+
+  let handleLoginAuth =async (e)  => {
     e.preventDefault();
     console.log('Login in with:', { email, password });
+
+      try {
+            
+
+                let result = await login(email, password)
+
+
+            }
+            catch (err) {
+
+            console.log(err);
+            let message = (err.response.data.message);
+            setError(message);
+        }
+
+
   };
 
-  const handleGoogleLogin = () => {
+  const handleGoogleLoginAuth = () => {
     console.log('Login in with Google');
   };
 
@@ -208,7 +236,7 @@ export default function Login() {
             Welcome Back
           </Typography>
           <Button
-            onClick={handleGoogleLogin}
+            onClick={handleGoogleLoginAuth}
             variant="outlined"
             sx={{
               width: '100%',
@@ -247,7 +275,7 @@ export default function Login() {
             Or Login  with a registered account
           </Typography>
           <form
-            onSubmit={handleLogin}
+            onSubmit={handleLoginAuth}
             style={{ display: 'flex', flexDirection: 'column', gap: 16 }}
           >
             <TextField
@@ -270,6 +298,14 @@ export default function Login() {
               fullWidth
               sx={{ mb: 2, bgcolor: '#f9fafb' }}
             />
+
+             {error && (
+                          <Typography color="error" sx={{ mt: 2, textAlign: "center" }}>
+                            {error}
+                          </Typography>
+                        )}
+
+                        
             <Typography align="center" sx={{ fontSize: 14, color: '#64748b', mb: 2 }}>
               Don't have an account?{' '}
               <a href="/register" style={{ color: '#111927', textDecoration: 'underline' }}>

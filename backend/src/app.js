@@ -2,7 +2,13 @@ import express from 'express';
 import cors from 'cors';
 
 import mongoose from "mongoose";
+import router from "./routes/user.js";
+import dotenv from "dotenv";
 
+
+
+
+dotenv.config();
 
 
 const app = express();
@@ -18,6 +24,8 @@ app.use(express.urlencoded({ limit: "40kb", extended: true }));
 app.get('/home', (req, res) => {
     res.send('Hello World!');
 });
+
+app.use("/", router);  
 
 
 

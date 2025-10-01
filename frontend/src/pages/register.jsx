@@ -1,17 +1,47 @@
-import { useState } from 'react';
+import { useState,useContext } from 'react';
 import { Box, Button, TextField, Typography, Paper } from '@mui/material';
+import { AuthContext } from '../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
+
+
+
 
 export default function Register() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
-  const handleRegister = (e) => {
+
+
+
+  const { register} = useContext(AuthContext);
+  const navigate = useNavigate();
+
+
+  const handleRegisterAuth = async (e) => {
     e.preventDefault();
     console.log('Register with:', { name, email, password });
+                
+           try {
+
+                 await register(name, email, password)
+                      //    navigate('/home')
+
+
+            }
+            catch (err) {
+
+            console.log(err);
+            let message = (err.response.data.message);
+            setError(message);
+        }
+
+
+    
   };
 
-  const handleGoogleContinue = () => {
+  const handleGoogleContinueAuth = () => {
     console.log('Continue with Google');
   };
 
@@ -212,7 +242,7 @@ export default function Register() {
         </Typography>
 
         <Button
-          onClick={handleGoogleContinue}
+          onClick={handleGoogleContinueAuth}
           variant="outlined"
           sx={{ width: '100%', mb: 4, height: 48, borderColor: '#d1d5db', color: '#111', textTransform: 'none', bgcolor: '#f9fafb', '&:hover': { bgcolor: '#f3f4f6' } }}
           startIcon={
@@ -231,7 +261,7 @@ export default function Register() {
           Or register with your details
         </Typography>
 
-        <form onSubmit={handleRegister} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+        <form onSubmit={handleRegisterAuth} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           <TextField
             type="text"
             placeholder="Name"
@@ -270,6 +300,13 @@ export default function Register() {
             Register
           </Button>
 
+            {error && (
+              <Typography color="error" sx={{ mt: 2, textAlign: "center" }}>
+                {error}
+              </Typography>
+            )}
+
+
           <Typography align="center" sx={{ fontSize: 14, color: '#64748b' }}>
             Already have an account?{' '}
             <a href="/login" style={{ color: '#111927', textDecoration: 'underline' }}>
@@ -282,3 +319,8 @@ export default function Register() {
     </Box>
   );
 }
+
+
+
+
+

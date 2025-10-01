@@ -17,16 +17,16 @@ const client = new OAuth2Client(
 
 
 const login = async (req, res) => {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
 
-  if (!username || !password) {
+  if (!email || !password) {
     return res
       .status(httpStatus.BAD_REQUEST)
-      .json({ message: "Please provide username and password" });
+      .json({ message: "Please provide email and password" });
   }
 
   try {
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ email });
     if (!user) {
       return res
         .status(httpStatus.NOT_FOUND)
@@ -38,7 +38,7 @@ const login = async (req, res) => {
     if (!isPasswordCorrect) {
       return res
         .status(httpStatus.UNAUTHORIZED)
-        .json({ message: "Invalid username or password" });
+        .json({ message: "Invalid email or password" });
     }
 
     const token = crypto.randomBytes(20).toString("hex");
@@ -68,16 +68,16 @@ const login = async (req, res) => {
 
 
 const register = async (req, res) => {
-  const { name, username, password } = req.body;
+  const { name, email, password } = req.body;
 
-  if (!name || !username || !password) {
+  if (!name || !email || !password) {
     return res
       .status(httpStatus.BAD_REQUEST)
       .json({ message: "Please provide all fields" });
   }
 
   try {
-    const existingUser = await User.findOne({ username });
+    const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res
         .status(httpStatus.CONFLICT)
@@ -88,7 +88,7 @@ const register = async (req, res) => {
 
     const newUser = new User({
       name,
-      username,
+      email,
       password: hashedPassword,
     });
 
