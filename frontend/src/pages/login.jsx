@@ -1,7 +1,7 @@
 
 
 
-import { useState,useContext } from 'react';
+import { useState,useContext,useEffect } from 'react';
 import { Button, TextField, Box, Typography, Paper } from '@mui/material';
 
 import { AuthContext } from '../contexts/AuthContext';
@@ -18,32 +18,69 @@ export default function Login() {
 
 
 
-   const { login } = useContext(AuthContext);
+   const { login , googleLogin } = useContext(AuthContext);
 
   let handleLoginAuth =async (e)  => {
     e.preventDefault();
     console.log('Login in with:', { email, password });
 
-      try {
-            
+   
 
-                let result = await login(email, password)
+
+      setError('');
+      setMessage('');
+
+       if (password.length < 6) {
+    setError("Password must be at least 6 characters long");
+    return;
+  }
+
+      try {
+            let result = await login(email, password)
+              localStorage.setItem("isLoggedIn", "true");
+  
+  // force header to refresh login state
+  window.dispatchEvent(new Event("storage"));
 
 
             }
-            catch (err) {
-
+          catch (err) {
             console.log(err);
-            let message = (err.response.data.message);
-            setError(message);
-        }
+
+  let message = "Login failed. Please try again.";
+
+  if (err.response && err.response.data && err.response.data.message) {
+    message = err.response.data.message;
+  } else if (err.message) {
+    message = err.message;
+  }
+
+  setError(message);
+}
 
 
   };
 
-  const handleGoogleLoginAuth = () => {
-    console.log('Login in with Google');
-  };
+//  const handleGoogleLoginAuth = () => {
+//     /* global google */
+//     if (window.google) {
+//       const client = window.google.accounts.oauth2.initTokenClient({
+//         client_id: "931291640959-fnrdj7phqnal42ulm65hsnsoeimnsm3n.apps.googleusercontent.com", // replace with your Google client ID
+//         scope: "profile email",
+//         callback: async (response) => {
+//           try {
+//             await googleLogin(response.access_token); // send token to backend
+//           } catch (err) {
+//             console.error("Google login error:", err);
+//             setError("Google login failed");
+//           }
+//         },
+//       });
+//       client.requestAccessToken();
+//     } else {
+//       setError("Google SDK not loaded");
+//     }
+//   };
 
   return (
     <Box
@@ -215,6 +252,17 @@ export default function Login() {
         </Box>
       </Box>
 
+
+
+
+
+
+
+
+
+
+
+
       {/* Right Side - Login Form */}
       <Box
         sx={{
@@ -235,7 +283,7 @@ export default function Login() {
           >
             Welcome Back
           </Typography>
-          <Button
+          {/* <Button
             onClick={handleGoogleLoginAuth}
             variant="outlined"
             sx={{
@@ -270,9 +318,9 @@ export default function Login() {
             }
           >
             Login  with Google
-          </Button>
+          </Button> */}
           <Typography align="center" sx={{ color: '#6b7280', mb: 3 }}>
-            Or Login  with a registered account
+             Login  with a registered account
           </Typography>
           <form
             onSubmit={handleLoginAuth}

@@ -1,4 +1,4 @@
-import { useState,useContext } from 'react';
+import { useState,useContext, useEffect  } from 'react';
 import { Box, Button, TextField, Typography, Paper } from '@mui/material';
 import { AuthContext } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -14,36 +14,149 @@ export default function Register() {
 
 
 
-
+ const [loading, setLoading] = useState(false);
   const { register} = useContext(AuthContext);
   const navigate = useNavigate();
 
 
-  const handleRegisterAuth = async (e) => {
-    e.preventDefault();
-    console.log('Register with:', { name, email, password });
+
+
+//     useEffect(() => {
+//     if (window.google) {
+//       window.google.accounts.id.initialize({
+//          client_id: "931291640959-fnrdj7phqnal42ulm65hsnsoeimnsm3n.apps.googleusercontent.com", // replace with real client ID
+//         callback: async (response) => {
+//           try {
+//             setLoading(true);
+//             await googleLogin(response.credential); // send token to backend
+//            // navigate('/home');
+//           } catch (err) {
+//             console.error(err);
+//             setError("Google sign-in failed");
+//           } finally {
+//             setLoading(false);
+//           }
+//         },
+//       });
+
+// console.log("Google initialized with:931291640959-fnrdj7phqnal42ulm65hsnsoeimnsm3n.apps.googleusercontent.com");
+//   } else {
+//     console.error("Google SDK not loaded or CLIENT_ID missing");
+//   }
+// }, [googleLogin]);
+
+
+
+
+
+//   const handleRegisterAuth = async (e) => {
+//     e.preventDefault();
+//     console.log('Register with:', { name, email, password });
                 
-           try {
+//            try {
 
-                 await register(name, email, password)
-                      //    navigate('/home')
+//                  await register(name, email, password)
+//                       //    navigate('/home')
 
 
-            }
-            catch (err) {
+//             }
+//             catch (err) {
 
-            console.log(err);
-            let message = (err.response.data.message);
-            setError(message);
-        }
+//             console.log(err);
+//             let message = err.response?.data?.message || "Something went wrong";
+//              setError(message);
+
+//         }
 
 
     
+//   };
+
+//  const handleGoogleContinueAuth = () => {
+//     if (window.google) {
+//       window.google.accounts.id.prompt((notification) => {
+//         if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+//           setError("Google sign-in was not completed");
+//         }
+//       });
+//     } else {
+//       setError("Google SDK not loaded");
+//     }
+//   };
+
+  // const CLIENT_ID =
+  //   "931291640959-fnrdj7phqnal42ulm65hsnsoeimnsm3n.apps.googleusercontent.com";
+
+  // // Initialize Google One Tap
+  // useEffect(() => {
+  //   if (window.google && CLIENT_ID) {
+  //     window.google.accounts.id.initialize({
+  //       client_id: CLIENT_ID,
+  //       callback: async (response) => {
+  //         try {
+  //           setLoading(true);
+  //           await googleLogin(response.credential); // send token to backend
+  //           // navigate("/home");  // enable after backend success
+  //         } catch (err) {
+  //           console.error(err);
+  //           setError("Google sign-in failed");
+  //         } finally {
+  //           setLoading(false);
+  //         }
+  //       },
+  //     });
+
+  //     console.log("✅ Google initialized with:", CLIENT_ID);
+  //   } else {
+  //     console.error("❌ Google SDK not loaded or client ID missing");
+  //   }
+  // }, [googleLogin]);
+
+  // Manual register
+  const handleRegisterAuth = async (e) => {
+    e.preventDefault();
+
+
+
+  setError(""); 
+
+ 
+  if (name.trim().length < 2) {
+    setError("Name must be at least 2 characters long");
+    return;
+  }
+
+  if (password.length < 6) {
+    setError("Password must be at least 6 characters long");
+    return;
+  }
+
+
+
+    try {
+      await register(name, email, password);
+        localStorage.setItem("isLoggedIn", "true");
+  
+  // force header to refresh login state
+  window.dispatchEvent(new Event("storage"));
+      // navigate("/home");
+    } catch (err) {
+      console.error(err);
+      let message = err.response?.data?.message || "Something went wrong";
+      setError(message);
+    }
   };
 
-  const handleGoogleContinueAuth = () => {
-    console.log('Continue with Google');
-  };
+  // // Trigger Google One Tap prompt manually
+  // const handleGoogleContinueAuth = () => {
+  //   if (window.google) {
+  //     window.google.accounts.id.prompt();
+  //   } else {
+  //     setError("Google SDK not loaded");
+  //   }
+  // };
+
+
 
   return (
  <Box
@@ -241,7 +354,7 @@ export default function Register() {
           Create your account
         </Typography>
 
-        <Button
+        {/* <Button
           onClick={handleGoogleContinueAuth}
           variant="outlined"
           sx={{ width: '100%', mb: 4, height: 48, borderColor: '#d1d5db', color: '#111', textTransform: 'none', bgcolor: '#f9fafb', '&:hover': { bgcolor: '#f3f4f6' } }}
@@ -255,10 +368,10 @@ export default function Register() {
           }
         >
           Continue with Google
-        </Button>
+        </Button> */}
 
         <Typography align="center" sx={{ color: '#6b7280', mb: 3 }}>
-          Or register with your details
+           Register with your details
         </Typography>
 
         <form onSubmit={handleRegisterAuth} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>

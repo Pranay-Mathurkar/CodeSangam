@@ -107,18 +107,19 @@ export const AuthProvider = ({ children }) => {
 
   // Register function
   const register = async (name, email, password) => {
-    try {
-      const res = await api.post("/register", { name, email, password });
-      if (res.status === 200 || res.status === 201) {
-        localStorage.setItem("token", res.data.token);
-        setUser(res.data.user || null);
-        navigate("/home");
-      }
-    } catch (err) {
-      console.error("Register failed:", err);
-        throw err; 
+  try {
+    const res = await api.post("/register", { name, email, password });
+    if (res.status === 200 || res.status === 201) {
+      localStorage.setItem("token", res.data.token);
+      setUser(res.data.user || { name, email }); // ✅ fallback
+      navigate("/home");
     }
-  };
+  } catch (err) {
+    console.error("Register failed:", err);
+    throw err; 
+  }
+};
+
 
   // Login function
   const login = async (email, password) => {
@@ -131,8 +132,30 @@ export const AuthProvider = ({ children }) => {
       }
     } catch (err) {
       console.error("Login failed:", err);
+      throw err;
     }
   };
+
+
+
+
+// const googleLogin = async (tokenId) => {
+//   try {
+//     const res = await api.post('/google-login', { tokenId });
+//     if (res.status === httpStatus.OK) {
+//       localStorage.setItem('token', res.data.token);
+//       setUser(res.data.user || null);
+//       navigate('/home');
+//     }
+//   } catch (err) {
+//     console.error('Google login failed:', err);
+//     throw err;
+//   }
+// };
+
+
+
+
 
   return (
     <AuthContext.Provider value={{ user, setUser, register, login }}>
