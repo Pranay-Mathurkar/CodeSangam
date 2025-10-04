@@ -1,90 +1,3 @@
-// import axios from "axios";
-// import httpStatus from "http-status";
-// import { createContext, useContext, useState } from "react";
-// import { useNavigate } from "react-router-dom";
-
-
-
-
-
-// export const AuthContext = createContext({});
-
-// const client = axios.create({
-//     baseURL: "http://localhost:3000",
-// })
-
-
-// export const AuthProvider = ({ children }) => {
-
-//     const authContext = useContext(AuthContext);
-
-
-//     const [userData, setUserData] = useState(authContext);
-
-
-//     const router = useNavigate();
-
-
-
-
-//     const handleRegister = async (name, email, password) => {
-//         try {
-//             let request = await client.post("/register", {
-//                 name: name,
-//                 email: email,
-//                 password: password
-//             })
-
-
-//             if (request.status === httpStatus.OK) {
-//                 localStorage.setItem("token", request.data.token);
-//                 router("/home")
-//             }
-//         } catch (err) {
-//             throw err;
-//         }
-//     }
-
-//     const handleLogin = async (email, password) => {
-//         try {
-//             let request = await client.post("/login", {
-//                 email: email,
-//                 password: password
-//             });
-
-//             console.log(email, password)
-//             console.log(request.data)
-
-//             if (request.status === httpStatus.OK) {
-//                 localStorage.setItem("token", request.data.token);
-//                 router("/home")
-//             }
-//         } catch (err) {
-//             throw err;
-//         }
-//     }
-
-  
-//     const data = {
-//         userData, setUserData,handleRegister, handleLogin
-//     }
-
-//     return (
-//         <AuthContext.Provider value={data}>
-//             {children}
-//         </AuthContext.Provider>
-//     )
-
-// }
-
-
-
-
-
-
-
-
-
 
 
 import { createContext, useState } from "react";
@@ -100,9 +13,13 @@ const api = axios.create({
   baseURL: "http://localhost:3000",
 });
 
+
+
+
+
 // Provider component
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null); // store logged-in user info
+  const [user, setUser] = useState(null); 
   const navigate = useNavigate();
 
   // Register function
@@ -111,7 +28,7 @@ export const AuthProvider = ({ children }) => {
     const res = await api.post("/register", { name, email, password });
     if (res.status === 200 || res.status === 201) {
       localStorage.setItem("token", res.data.token);
-      setUser(res.data.user || { name, email }); // ✅ fallback
+      setUser(res.data.user || { name, email }); 
       navigate("/home");
     }
   } catch (err) {
@@ -138,27 +55,56 @@ export const AuthProvider = ({ children }) => {
 
 
 
+  // Medicine function
 
-// const googleLogin = async (tokenId) => {
-//   try {
-//     const res = await api.post('/google-login', { tokenId });
-//     if (res.status === httpStatus.OK) {
-//       localStorage.setItem('token', res.data.token);
-//       setUser(res.data.user || null);
-//       navigate('/home');
-//     }
-//   } catch (err) {
-//     console.error('Google login failed:', err);
-//     throw err;
-//   }
-// };
+  const medicine = async (userId, name, dosage, frequency, time, startDate, endDate) => {
+  try {
+    const token = localStorage.getItem('token');
+    const res = await api.post(
+      "/medicine",
+      { userId, name, dosage, frequency, time, startDate, endDate },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    if (res.status === 200 || res.status === 201) {
+      navigate('/user');
+      return res.data;
+    } else {
+      throw new Error('Failed to add medicine');
+    }
+  } catch (err) {
+    console.error("Medicine function failed:", err);
+    throw err;
+  }
+};
 
+
+// get user history function
+
+
+
+
+
+const getHistoryOfUser = async () => {
+  try {
+    let request = await api.get("/getUserHistory", {
+      params: {
+        token: localStorage.getItem("token")
+      }
+    });
+    if (request.status === 200 || request.status === 201) {
+      navigate('/user');
+      return request.data;
+    }
+  } catch (err) {
+    throw err;
+  }
+};
 
 
 
 
   return (
-    <AuthContext.Provider value={{ user, setUser, register, login }}>
+    <AuthContext.Provider value={{ user, setUser, register, login ,medicine,getHistoryOfUser}}>
       {children}
     </AuthContext.Provider>
   );

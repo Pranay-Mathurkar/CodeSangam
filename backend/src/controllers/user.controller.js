@@ -1,5 +1,10 @@
 import httpStatus from "http-status";
 import { User } from "../models/user.model.js";
+
+
+import { Medicine } from "../models/medicine.model.js";
+
+
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 // import { OAuth2Client } from "google-auth-library";
@@ -105,109 +110,54 @@ const register = async (req, res) => {
 };
 
 
+const medicine = async (req, res) => {
+  try {
+    const { userId, name, dosage, frequency, time, startDate, endDate } = req.body;
+
+    // Basic validation (expand as needed)
+    if (!userId || !name || !dosage || !frequency || !time || !startDate || !endDate) {
+      return res.status(httpStatus.BAD_REQUEST).json({ message: 'All fields are required' });
+    }
+
+    const newMedicine = new Medicine({
+      userId,
+      name,
+      dosage,
+      frequency,
+      time,
+      startDate,
+      endDate,
+    });
+     await newMedicine.save();
+
+    return res.status(httpStatus.CREATED).json({ message: 'Medicine record created successfully', medicine: newMedicine });
+  } catch (e) {
+    return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: `Failed to create medicine: ${e.message}` });
+  }
+};
+
+
+const getUserHistory = async (req, res) => {
+  const { token } = req.query;
+
+  if (!token) {
+    return res.status(httpStatus.BAD_REQUEST).json({ message: 'Token is required' });
+  }
+
+  try {
+    const user = await User.findOne({ token });
+    if (!user) {
+      return res.status(httpStatus.NOT_FOUND).json({ message: 'User not found' });
+    }
+    
+    const medicines = await Medicine.find({ userId: user._id });
+    return res.status(httpStatus.OK).json(medicines);
+
+  } catch (e) {
+    return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: `Something went wrong: ${e.message}` });
+  }
+};
 
 
 
-// --GOOGLE LOGIN --
-
-
-
-
-
-// const googleLogin = async (req, res) => {
-//   const { tokenId } = req.body; 
-//   if (!tokenId) {
-//     return res
-//       .status(httpStatus.BAD_REQUEST)
-//       .json({ message: "Google token is required" });
-//   }
-
-//   try {
-   
-//     const ticket = await client.verifyIdToken({
-//       idToken: tokenId,
-//       audience: process.env.GOOGLE_CLIENT_ID,
-//     });
-
-//     const payload = ticket.getPayload();
-//     const { sub: googleId, email, name } = payload;
-
-//     let user = await User.findOne({ googleId });
-
-//     if (!user) {
-//       user = await User.findOne({ email });
-
-//       if (user) {
-//         user.googleId = googleId;
-//       } else {
-//         user = new User({ name, email, googleId });
-//       }
-
-//       await user.save();
-//     }
-
-//     const token = crypto.randomBytes(20).toString("hex");
-//     user.token = token;
-//     await user.save();
-
-//     return res.status(httpStatus.OK).json({
-//       message: "Google login successful",
-//       token,
-//       user: { id: user._id, email: user.email, name: user.name },
-//     });
-//   } catch (e) {
-//     res
-//       .status(httpStatus.INTERNAL_SERVER_ERROR)
-//       .json({ message: `Something went wrong: ${e.message}` });
-//   }
-// // };
-// const googleLogin = async (req, res) => {
-//   const { tokenId } = req.body;  // Token ID should come from frontend
-
-//   if (!tokenId) {
-//     return res.status(httpStatus.BAD_REQUEST).json({ message: "Google token is required" });
-//   }
-
-//   try {
-//     // Verify token with Google OAuth client
-//     const ticket = await client.verifyIdToken({
-//       idToken: tokenId,
-//       audience: process.env.GOOGLE_CLIENT_ID,
-//     });
-
-//     // Extract user info from payload
-//     const payload = ticket.getPayload();
-//     const { sub: googleId, email, name } = payload;
-
-//     // Find user by googleId or email
-//     let user = await User.findOne({ googleId });
-//     if (!user) {
-//       user = await User.findOne({ email });
-//       if (user) {
-//         user.googleId = googleId;
-//       } else {
-//         user = new User({ name, email, googleId });
-//       }
-//       await user.save();
-//     }
-
-//     // Generate your auth token (could use JWT here, currently random hex)
-//     const token = crypto.randomBytes(20).toString("hex");
-//     user.token = token;
-//     await user.save();
-
-//     // Respond with token and user info
-//     return res.status(httpStatus.OK).json({
-//       message: "Google login successful",
-//       token,
-//       user: { id: user._id, email: user.email, name: user.name },
-//     });
-//   } catch (e) {
-//     return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
-//       message: `Something went wrong: ${e.message}`,
-//     });
-//   }
-// };
-
-
-export { login, register };
+export { login, register,medicine, getUserHistory};
