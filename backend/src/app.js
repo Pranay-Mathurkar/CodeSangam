@@ -8,6 +8,8 @@ import dotenv from "dotenv";
 
 
 
+
+
 dotenv.config();
 
 
@@ -25,9 +27,7 @@ app.get('/home', (req, res) => {
     res.send('Hello World!');
 });
 
-app.use("/", router);  
-
-
+app.use("/", router);
 
 const start = async () => {
     app.set("mongo_user")

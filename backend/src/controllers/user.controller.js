@@ -114,7 +114,7 @@ const medicine = async (req, res) => {
   try {
     const { userId, name, dosage, frequency, time, startDate, endDate } = req.body;
 
-    // Basic validation (expand as needed)
+    
     if (!userId || !name || !dosage || !frequency || !time || !startDate || !endDate) {
       return res.status(httpStatus.BAD_REQUEST).json({ message: 'All fields are required' });
     }
@@ -160,4 +160,66 @@ const getUserHistory = async (req, res) => {
 
 
 
-export { login, register,medicine, getUserHistory};
+const updateMedicineById = async (req, res) => {
+  const { id } = req.params;
+  const { userId, name, dosage, frequency, time, startDate, endDate } = req.body;
+
+  if (!userId || !name || !dosage || !frequency || !time || !startDate || !endDate) {
+    return res.status(httpStatus.BAD_REQUEST).json({ message: 'All fields are required' });
+  }
+
+  try {
+    const medicine = await Medicine.findById(id);
+    if (!medicine) {
+      return res.status(httpStatus.NOT_FOUND).json({ message: 'Medicine not found' });
+    }
+
+    if (medicine.userId.toString() !== userId) {
+      return res.status(httpStatus.FORBIDDEN).json({ message: 'Not authorized to update this medicine' });
+    }
+
+    medicine.name = name;
+    medicine.dosage = dosage;
+    medicine.frequency = frequency;
+    medicine.time = time;
+    medicine.startDate = startDate;
+    medicine.endDate = endDate;
+
+    await medicine.save();
+    res.json({ message: 'Medicine successfully updated', medicine });
+  } catch (e) {
+    res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: `Failed to update: ${e.message}` });
+  }
+};
+
+
+
+
+
+const deleteMedicineById = async (req, res) => {
+  const { id } = req.params;
+  const userId = req.query.userId;  // get from query param
+
+  try {
+    const medicine = await Medicine.findById(id);
+    if (!medicine) {
+      return res.status(httpStatus.NOT_FOUND).json({ message: "Medicine not found" });
+    }
+
+    if (medicine.userId.toString() !== userId) {
+      return res.status(httpStatus.FORBIDDEN).json({ message: "Not authorized to delete this medicine" });
+    }
+
+    await medicine.remove();
+
+    res.json({ message: "Medicine successfully deleted" });
+  } catch (e) {
+    res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: `Failed to delete: ${e.message}` });
+  }
+};
+
+
+
+
+
+export { login, register,medicine, getUserHistory,updateMedicineById,deleteMedicineById};

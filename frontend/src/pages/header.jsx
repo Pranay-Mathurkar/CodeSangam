@@ -45,14 +45,14 @@ const Header = () => {
         className="text-3xl md:text-4xl lg:text-5xl font-light cursor-pointer"
         onClick={() => navigate("/home")}
       >
-        Alchemist Grimoire
+        MEDICO
       </h1>
 
       {/* Desktop Navigation */}
       <nav className="hidden md:flex items-center gap-10">
         <Link
-          to="/user"
-          onClick={(e) => handleProtectedNav(e, "/user")}
+          to="/dashboard"
+          onClick={(e) => handleProtectedNav(e, "/dashboard")}
           className="hover:text-gray-400 transition-colors duration-300"
         >
           My Account
@@ -124,13 +124,13 @@ const Header = () => {
 
         {/* Mobile Nav Links */}
         <nav className="flex flex-col gap-6 px-6 mt-6">
-          <Link
+          {/* <Link
             to="/user"
             onClick={(e) => handleProtectedNav(e, "/user")}
             className="hover:text-gray-400 transition-colors"
           >
             My Account
-          </Link>
+          </Link> */}
 
           <Link to="/about" className="hover:text-gray-400 transition-colors">
             About Us
