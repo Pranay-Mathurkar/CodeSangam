@@ -1,38 +1,87 @@
+
+
 import { Bell } from "lucide-react";
 import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Topbar() {
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
 
-      const { user } = useContext(AuthContext);
-    
   return (
     <header
-      className="h-16 bg-black border-b border-gray-800 flex items-center justify-between px-6 shadow-sm"
-      data-aos="fade-down"
-      data-aos-duration="1200"
+      style={{
+        height: "64px",
+        backgroundColor: "black",
+        color: "#FFD700",
+        display: "flex",
+        justifyContent: "flex-end",
+        alignItems: "center",
+        padding: "0 24px",
+        borderBottom: "1px solid #222",
+        zIndex: 10,
+      }}
     >
-      {/* Page Title */}
-      {/* <h3 className="text-lg font-semibold text-gray-100">Dashboard</h3> */}
-
-      {/* Right Section */}
-     <div className="flex items-center gap-6"> 
-        {/* Notifications */}
-        {/* <button className="relative text-gray-300 hover:text-yellow-400 transition">
-          <Bell size={20} />
-          <span className="absolute -top-1 -right-1 w-2 h-2 bg-yellow-500 rounded-full"></span>
-        </button> */}
-
-        {/* User Info */}
-        <div className="flex items-center gap-2">
-          <img
-            src="https://i.pravatar.cc/40"
-            alt="User Avatar"
-            className="w-8 h-8 rounded-full border border-gray-700"
-          />
-          <span className="text-sm text-gray-200">  {user?.name || "Alchemist"} </span>
-        </div>
+      <button
+        style={{
+          position: "relative",
+          padding: 0,
+          background: "none",
+          border: "none",
+          marginRight: 16,
+          color: "#FFD700",
+          cursor: "pointer",
+        }}
+        aria-label="Notifications"
+        onClick={() => navigate("/notifications")}
+      >
+        <Bell size={28} />
+        <span
+          style={{
+            position: "absolute",
+            top: 2,
+            right: -2,
+            width: 11,
+            height: 11,
+            background: "#FF1744",
+            borderRadius: "50%",
+            border: "2px solid #222",
+            boxShadow: "0 0 6px #FFD700",
+            display: "block",
+          }}
+        />
+      </button>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 10,
+        }}
+      >
+        <img
+          src="https://i.pravatar.cc/40"
+          alt="User Avatar"
+          style={{
+            width: 34,
+            height: 34,
+            borderRadius: "50%",
+            border: "2px solid #FFD700",
+          }}
+        />
+        <span
+          style={{
+            color: "white",
+            fontWeight: 600,
+            fontSize: 15,
+            marginLeft: 4,
+            letterSpacing: 0.2,
+          }}
+        >
+          {user?.name || "Alchemist"}
+        </span>
       </div>
     </header>
   );
 }
+

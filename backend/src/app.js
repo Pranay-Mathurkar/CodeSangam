@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 import router from "./routes/user.js";
 import dotenv from "dotenv";
 
-
+import "./controllers/user.controller.js";
 
 
 

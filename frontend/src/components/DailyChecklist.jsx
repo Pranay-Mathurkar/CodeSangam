@@ -16,7 +16,7 @@ export default function DailyChecklist() {
   return (
     <div className="bg-black p-6 rounded-2xl shadow-[0_0_15px_rgba(255,215,0,0.3)] hover:shadow-[0_0_25px_rgba(255,215,0,0.4)] transition h-full">
       <h3 className="text-lg font-semibold text-yellow-400 mb-4 flex items-center gap-2">
-        ✅ Daily Checklist
+         Daily Checklist
       </h3>
 
       <ul className="space-y-3">

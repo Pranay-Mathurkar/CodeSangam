@@ -8,22 +8,23 @@ export default function Sidebar({ closeSidebar }) {
     const { user } = useContext(AuthContext);
 
   const links = [
-    { to: "/dashboard", label: "Dashboard", icon: <Home size={20} /> },
-    { to: "/reminders", label: "Reminders", icon: <Bell size={20} /> },
-    { to: "/wellness", label: "Wellness", icon: <Activity size={20} /> },
-    { to: "/settings", label: "Settings", icon: <Settings size={20} /> },
-  ];
+  { to: "/home", label: "Home", icon: <Home size={20} /> },
+    { to: "/notifications", label: "Notifications", icon: <Bell size={20} /> },
+    { to: "/dashboard", label: "Dashboard",  icon: <Activity size={20} /> },
+  
+   ];
 
+   
   return (
     <aside className="flex flex-col h-full bg-black text-gray-300 shadow-xl rounded-tr-2xl rounded-br-2xl overflow-hidden">
-      {/* Logo / Header */}
+     
       <div className="px-6 py-6 border-b border-gray-800 flex items-center justify-center">
         <h2 className="text-xl font-bold text-yellow-400 tracking-wide">
            {user?.name || "Alchemist"}
         </h2>
       </div>
 
-      {/* Navigation */}
+      
       <nav className="flex flex-col mt-6 px-2 gap-2">
         {links.map((link) => {
           const isActive = location.pathname === link.to;
@@ -45,10 +46,6 @@ export default function Sidebar({ closeSidebar }) {
         })}
       </nav>
 
-      {/* Optional Footer */}
-      {/* <div className="mt-auto px-6 py-4 border-t border-gray-800 text-gray-500 text-sm text-center">
-        &copy; 2025 Alchemist Labs
-      </div> */}
     </aside>
   );
 }

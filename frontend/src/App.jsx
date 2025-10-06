@@ -13,7 +13,7 @@ import Documentation from "./pages/documentation";
 import  Dashboard from "./pages/dashboard";
 import  MedicineForm  from "./pages/medicine";
 import UserMedicinesManager from "./pages/editmedicine";
-
+import Notifications from "./pages/notifications";
 
 
 export default function App() {
@@ -35,10 +35,10 @@ export default function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/medicine" element={<MedicineForm />} />
          <Route path="/getUserHistory" element={<UserMedicinesManager />} />
+          <Route path="/notifications" element={<Notifications />} />
 
 
-
-         
+          
         </Routes>
       </AuthProvider>
     </Router>
