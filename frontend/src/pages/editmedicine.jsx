@@ -130,7 +130,7 @@ export default function UserMedicinesManager() {
 
     try {
       setOperationLoading(true);
-      await updateMedicine(editing._id, { ...editForm, userId: user._id });
+      await updateMedicine(editing._id, { ...editForm, userId: (user._id || user.id) });
       const updatedList = await getHistoryOfUser();
       setMedicines(updatedList);
       closeEditDialog();
@@ -150,7 +150,8 @@ export default function UserMedicinesManager() {
 
     try {
       setOperationLoading(true);
-      await deleteMedicine(deleteId, user._id);
+     await deleteMedicine(deleteId, user._id || user.id);
+
       setDeleteId(null);
       setMedicines(await getHistoryOfUser());
     } catch {

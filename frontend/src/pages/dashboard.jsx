@@ -79,22 +79,21 @@ export default function Dashboard() {
 
 
 
-  
-
   const getDisplayStatus = (dose) => {
-    const medTime = new Date(dose.scheduledTime);
-    const diffMins = (now - medTime) / (1000 * 60);
+  if (dose.log) {
+    if (dose.log.status === "taken") return "taken";
+    if (dose.log.status === "late") return "late";
+    if (dose.log.status === "missed") return "missed";
+  }
 
-    if (dose.log) {
-      if (dose.log.status === "taken") return "taken";
-      if (dose.log.status === "late") return "late";
-      if (dose.log.status === "missed") return "missed";
-    }
+  // If not logged, show "due" even if more than 1 hour old
+  const medTime = new Date(dose.scheduledTime);
+  const diffMins = (now - medTime) / (1000 * 60);
 
-    if (diffMins < 0) return "upcoming"; 
-    if (diffMins >= 0 && diffMins <= 60) return "due";
-    return "missed"; 
-  };
+  if (diffMins < 0) return "upcoming";
+  return "due"; // always show as "due" until user marks "Taken" or "Not Taken"
+};
+
 
   const sortedDoses = [...doses].sort(
     (a, b) => new Date(a.scheduledTime) - new Date(b.scheduledTime)

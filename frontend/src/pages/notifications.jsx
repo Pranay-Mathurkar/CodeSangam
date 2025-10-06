@@ -13,7 +13,7 @@ export default function Notifications() {
   const [loading, setLoading] = useState(false);
 
   
-  r
+  
   const handleDelete = async (notifId) => {
     try {
       setLoading(true);
@@ -73,7 +73,7 @@ export default function Notifications() {
         </div>
       ) : notifications.length === 0 ? (
 
-        
+
         <div className="py-16 text-center text-gray-300 bg-[#18181b] rounded-xl shadow-[0_0_20px_#FFD70022]">
           <AlertCircle size={36} className="mx-auto mb-4 text-yellow-400" />
           <h3 className="text-xl font-semibold text-yellow-400 mb-2 drop-shadow-glow">

@@ -259,7 +259,7 @@ const deleteMedicineById = async (req, res) => {
         .json({ message: "Not authorized to delete this medicine" });
     }
 
-    await medicine.remove();
+    await medicine.deleteOne(); 
     res.json({ message: "Medicine successfully deleted" });
   } catch (e) {
     res
