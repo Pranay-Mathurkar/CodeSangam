@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import httpStatus from "http-status";
 
+import { GoogleOAuthProvider } from '@react-oauth/google';
+
 export const AuthContext = createContext({});
 
 const api = axios.create({
@@ -91,6 +93,23 @@ export const AuthProvider = ({ children }) => {
       throw err;
     }
   };
+
+  const googleLogin = async (credentialResponse) => {
+  try {
+    const res = await api.post("/auth/google", {
+      token: credentialResponse.credential,
+    });
+    if (res.status === httpStatus.OK) {
+      localStorage.setItem("token", res.data.token);
+      setUser(res.data.user);
+      navigate("/home");
+    }
+  } catch (err) {
+    console.error("Google login failed:", err);
+    throw err;
+  }
+};
+
 
   const medicine = async (userId, name, frequencyPerDay, times, startDate, endDate) => {
     try {
@@ -266,6 +285,7 @@ export const AuthProvider = ({ children }) => {
         setUser,
         register,
         login,
+         googleLogin,
         medicine,
         getHistoryOfUser,
         updateMedicine,
