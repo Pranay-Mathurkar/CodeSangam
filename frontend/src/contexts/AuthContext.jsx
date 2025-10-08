@@ -23,25 +23,25 @@ export const AuthProvider = ({ children }) => {
     }
   });
 
-  // const [alertedDoses, setAlertedDoses] = useState(() => {
-  //   try {
-  //     const saved = localStorage.getItem("alertedDoses");
-  //     return saved ? new Set(JSON.parse(saved)) : new Set();
-  //   } catch {
-  //     return new Set();
-  //   }
-  // });
+  const [alertedDoses, setAlertedDoses] = useState(() => {
+    try {
+      const saved = localStorage.getItem("alertedDoses");
+      return saved ? new Set(JSON.parse(saved)) : new Set();
+    } catch {
+      return new Set();
+    }
+  });
 
-  // Add alerted dose safely (avoid duplicates)
-  // const addAlertedDose = useCallback((doseKey) => {
-  //   setAlertedDoses((prev) => {
-  //     if (prev.has(doseKey)) return prev; // already alerted
-  //     const updated = new Set(prev);
-  //     updated.add(doseKey);
-  //     localStorage.setItem("alertedDoses", JSON.stringify(Array.from(updated)));
-  //     return updated;
-  //   });
-  // }, []);
+  
+  const addAlertedDose = useCallback((doseKey) => {
+    setAlertedDoses((prev) => {
+      if (prev.has(doseKey)) return prev; // already alerted
+      const updated = new Set(prev);
+      updated.add(doseKey);
+      localStorage.setItem("alertedDoses", JSON.stringify(Array.from(updated)));
+      return updated;
+    });
+  }, []);
 
   
 

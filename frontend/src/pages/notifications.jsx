@@ -15,6 +15,7 @@ export default function Notifications() {
   
   
   const handleDelete = async (notifId) => {
+
     try {
       setLoading(true);
       const token = localStorage.getItem("token");
@@ -60,6 +61,7 @@ export default function Notifications() {
     return () => clearInterval(intervalId);
   }, [user, getNotifications]);
 
+
   return (
     <div className="min-h-screen px-6 py-8 bg-black flex flex-col">
       <h2 className="text-3xl font-bold text-yellow-400 mb-8 drop-shadow-glow flex gap-2 items-center">
@@ -87,10 +89,13 @@ export default function Notifications() {
           {notifications.map((notif) => {
             const icon =
               notif.type === "missed" ? (
+
                 <AlertCircle size={28} className="mt-1 text-red-500" />
               ) : notif.type === "late" ? (
+
                 <Clock size={28} className="mt-1 text-yellow-400" />
               ) : (
+
                 <Pill size={28} className="mt-1 text-green-400" />
               );
 
@@ -105,9 +110,9 @@ export default function Notifications() {
                     {notif.medicineName || "Medicine Reminder"}
                   </h4>
                   <p className="text-gray-200 text-sm mt-1">{notif.message}</p>
-                  <p className="text-xs text-gray-500 mt-2">
+                  {/* <p className="text-xs text-gray-500 mt-2">
                     {new Date(notif.doseTime || notif.createdAt).toLocaleString()}
-                  </p>
+                  </p> */}
                 </div>
                 <button
                   title="Delete notification"

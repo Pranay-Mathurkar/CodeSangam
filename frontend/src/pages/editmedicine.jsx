@@ -1,7 +1,4 @@
 
-
-
-
 import React, { useContext, useEffect, useState } from "react";
 import { format } from "date-fns";
 import {
@@ -64,6 +61,8 @@ export default function UserMedicinesManager() {
     };
     fetchMedicines();
   }, [getHistoryOfUser]);
+
+
 
   const getStatus = (medicine) => {
     const now = new Date();
@@ -184,7 +183,7 @@ export default function UserMedicinesManager() {
             No medicines added yet
           </h2>
           <p className="text-gray-300 text-md">
-            Add your first medicine using the form above.
+            Add your first medicine using the form .
           </p>
         </div>
       </div>
@@ -230,7 +229,9 @@ export default function UserMedicinesManager() {
 
             <div className="grid grid-cols-1 gap-1 sm:grid-cols-3 text-sm text-gray-300 my-2">
               <span className="flex items-center gap-1">
+
                 <Clock size={16} />
+
                 {m.times?.map((t) => toLocalTimeString(t)).join(", ")}
               </span>
               <span className="flex items-center gap-1">
@@ -350,7 +351,9 @@ export default function UserMedicinesManager() {
         </DialogActions>
       </Dialog>
 
-      {/* 🗑️ Delete Dialog */}
+      {/*  Delete  */}
+
+      
       <Dialog open={!!deleteId} onClose={() => setDeleteId(null)} maxWidth="xs" fullWidth>
         <DialogTitle sx={{ color: "#FFD700", background: "#18181b", fontWeight: 700 }}>
           Delete Medicine
