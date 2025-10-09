@@ -1,7 +1,6 @@
 
  import { Router } from "express";
  import {chatbotHandler} from "../controllers/chatbot.controller.js";
- router.post("/chatbot",chatbotHandler);
 
 import {
   googleLogin,
@@ -25,6 +24,7 @@ router.post("/login", login);
 router.post("/auth/google", googleLogin);
 
 router.post("/medicine", medicine);
+router.post("/chatbot",chatbotHandler);
 router.get("/getUserHistory", getUserHistory);
 router.put("/medicine/:id", updateMedicineById);
 router.delete("/medicine/:id", deleteMedicineById);
