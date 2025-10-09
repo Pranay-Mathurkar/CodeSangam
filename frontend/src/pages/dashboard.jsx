@@ -1,17 +1,18 @@
 
+
+
+
 import React, { useContext, useState, useEffect } from "react";
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
-import { Menu, X } from "lucide-react";
+import { Menu, X, CheckCircle, Clock, XCircle } from "lucide-react"; 
 import { AuthContext } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 
-
+const getPercent = (onTime, late, missed, total) => total === 0 ? 0 : Math.round(((onTime + late * 0.5) / total) * 100);
 
 export default function Dashboard() {
-
-
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { user, trackIntake } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -20,16 +21,10 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [now, setNow] = useState(new Date());
 
- 
-
-
   useEffect(() => {
     const interval = setInterval(() => setNow(new Date()), 30000);
     return () => clearInterval(interval);
   }, []);
-
-  
-
 
   const fetchDoses = async () => {
     setLoading(true);
@@ -44,10 +39,6 @@ export default function Dashboard() {
     setLoading(false);
   };
 
-
-
- 
-
   useEffect(() => {
     if (user) {
       fetchDoses();
@@ -56,85 +47,64 @@ export default function Dashboard() {
     }
   }, [user]);
 
-
-
-
- 
-
   const handleIntake = async (medicineId, scheduledTime, markedStatus) => {
     try {
       const now = new Date();
       const scheduled = new Date(scheduledTime);
       const isLate = markedStatus === "taken" && now - scheduled > 60 * 60 * 1000;
       const sendStatus = isLate ? "late" : markedStatus;
-
       await trackIntake(medicineId, scheduledTime, sendStatus);
-      await fetchDoses(); 
-      
-
+      await fetchDoses();
     } catch (e) {
       console.error("Track intake failed:", e);
     }
   };
 
-
-
   const getDisplayStatus = (dose) => {
-  if (dose.log) {
-    if (dose.log.status === "taken") return "taken";
-    if (dose.log.status === "late") return "late";
-    if (dose.log.status === "missed") return "missed";
-  }
-
-  // If not logged, show "due" even if more than 1 hour old
-  const medTime = new Date(dose.scheduledTime);
-  const diffMins = (now - medTime) / (1000 * 60);
-
-  if (diffMins < 0) return "upcoming";
-  return "due"; // always show as "due" until user marks "Taken" or "Not Taken"
-};
-
+    if (dose.log) {
+      if (dose.log.status === "taken") return "taken";
+      if (dose.log.status === "late") return "late";
+      if (dose.log.status === "missed") return "missed";
+    }
+    const medTime = new Date(dose.scheduledTime);
+    const diffMins = (now - medTime) / (1000 * 60);
+    if (diffMins < 0) return "upcoming";
+    return "due";
+  };
 
   const sortedDoses = [...doses].sort(
     (a, b) => new Date(a.scheduledTime) - new Date(b.scheduledTime)
   );
-
-  // Progress bar 
-
-
 
   const pastOrNow = sortedDoses.filter(d => new Date(d.scheduledTime) <= now);
   const onTime = pastOrNow.filter(d => getDisplayStatus(d) === "taken").length;
   const late = pastOrNow.filter(d => getDisplayStatus(d) === "late").length;
   const missed = pastOrNow.filter(d => getDisplayStatus(d) === "missed").length;
   const total = sortedDoses.length;
-  const greenWidth = total === 0 ? 0 : (onTime / total) * 100;
-  const yellowWidth = total === 0 ? 0 : (late / total) * 50;
+  const percent = getPercent(onTime, late, missed, total);
+
+  // Card status colors
+  const statusTheme = {
+    taken: "bg-gradient-to-br from-green-500 via-green-700 to-black border-green-400 text-black",
+    late: "bg-gradient-to-br from-yellow-400 via-yellow-700 to-black border-yellow-300 text-black",
+    missed: "bg-gradient-to-br from-red-600 via-red-800 to-black border-red-400 text-white",
+    due: "bg-gradient-to-br from-blue-600 via-blue-800 to-black border-blue-400 text-white",
+    upcoming: "bg-gradient-to-br from-gray-800 via-black to-black border-gray-600 text-gray-200",
+  };
 
   return (
     <div className="flex min-h-screen bg-black text-gray-100 relative">
-
-
-      {/* Mobile Sidebar */}
-
-
-
+      {/* Sidebar */}
       {isSidebarOpen && (
         <div className="fixed inset-0 z-50 flex">
           <div
             onClick={() => setIsSidebarOpen(false)}
             className="absolute inset-0 bg-black/50 transition-opacity"
           />
-          <div className="relative w-64 bg-black p-4 shadow-[0_0_15px_rgba(255,215,0,0.3)]">
+          <div className="relative w-64 bg-[#18181b] border-l-4 border-yellow-400/30 p-4 shadow-lg rounded-tr-3xl">
             <div className="flex items-center justify-between mb-4">
-              <span className="text-lg font-semibold text-yellow-400">
-                {user?.name || "Alchemist"}
-              </span>
-              <button
-                onClick={() => setIsSidebarOpen(false)}
-                aria-label="Close sidebar"
-                className="p-2 rounded-md hover:bg-gray-900 transition"
-              >
+              <span className="text-lg font-semibold text-yellow-400">{user?.name || "Alchemist"}</span>
+              <button className="p-2 rounded-md hover:bg-gray-900 transition" onClick={() => setIsSidebarOpen(false)}>
                 <X className="h-6 w-6 text-gray-200" />
               </button>
             </div>
@@ -143,14 +113,7 @@ export default function Dashboard() {
         </div>
       )}
 
-      {/* Main Section */}
-
-
       <div className="flex flex-col flex-1">
-
-        {/* Topbar */}
-
-
         <div className="flex items-center justify-between p-4 border-b border-gray-800 bg-black">
           <button
             onClick={() => setIsSidebarOpen(true)}
@@ -162,88 +125,58 @@ export default function Dashboard() {
           <Topbar />
         </div>
 
-        {/* Content */}
-
-
         <main className="p-8 flex-1">
-          <h2 className="text-3xl font-bold text-yellow-400 mb-4">
+          <h2 className="text-4xl font-bold text-yellow-400 mb-6 drop-shadow">
             Welcome back, {user?.name || "Alchemist"} ✨
           </h2>
-
-          <div className="flex gap-4 mb-8">
-            <button
-              onClick={() => navigate("/medicine")}
-              className="bg-yellow-500 hover:bg-yellow-400 transition text-black font-medium py-2 px-4 rounded-lg shadow-[0_0_10px_rgba(255,215,0,0.3)]"
-            >
-              + Add Medicine
-            </button>
-            <button
-              onClick={() => navigate("/getUserHistory")}
-              className="bg-gray-800 hover:bg-gray-700 transition text-gray-200 font-medium py-2 px-4 rounded-lg"
-            >
-              Manage Medicine
-            </button>
-          </div>
-
-          <div className="flex gap-10">
-
-
-            {/* Left: Medicine list */}
-
-
-            <div className="w-full max-w-xl">
-              <h3 className="text-xl text-yellow-300 mb-4 font-semibold">
+          
+          <div className="flex flex-col lg:flex-row gap-10">
+            {/* Medicine Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 flex-1">
+              <h3 className="col-span-1 sm:col-span-2 text-2xl text-yellow-300 font-semibold mb-2">
                 Medicines To Take Today
               </h3>
               {loading ? (
                 <div className="text-yellow-500">Loading...</div>
               ) : total === 0 ? (
-                <div className="bg-[#18181b] border border-yellow-400/30 px-8 py-10 text-yellow-400 rounded-lg shadow-[0_0_20px_#FFD70022]">
+                <div className="col-span-1 sm:col-span-2 bg-[#18181b] border border-yellow-400/30 px-8 py-12 text-yellow-400 rounded-2xl shadow-lg text-center">
                   No medicine for today
                 </div>
               ) : (
                 sortedDoses.map((dose) => {
                   const doseStatus = getDisplayStatus(dose);
-                  let statusColor =
-                    doseStatus === "taken"
-                      ? "bg-green-600"
-                      : doseStatus === "late"
-                      ? "bg-yellow-500 text-black"
-                      : doseStatus === "missed"
-                      ? "bg-red-600"
-                      : "bg-blue-500";
-
+                  const themeClass = statusTheme[doseStatus] || statusTheme["due"];
                   return (
                     <div
                       key={dose.medicineId + dose.scheduledTime}
-                      className={`mb-6 bg-[#18181b] rounded-xl px-6 py-4 border-l-4 shadow ${statusColor}`}
+                      className={`rounded-3xl shadow-xl border-2 px-6 py-7 transition transform hover:scale-105 ${themeClass}`}
                     >
-                      <div className="flex flex-col md:flex-row md:items-center md:justify-between">
-                        <div>
-                          <span className="text-yellow-300 font-medium text-lg">
-                            {dose.name}
+                      <div className="flex flex-col space-y-3">
+                        <div className="flex items-center justify-between">
+                          <span className="text-2xl font-bold">{dose.name}</span>
+                          <span className="text-md font-bold px-4 py-1 rounded-full shadow capitalize">
+                            {doseStatus === "taken"
+                              ? "Taken"
+                              : doseStatus === "late"
+                              ? "Taken Late"
+                              : doseStatus === "missed"
+                              ? "Missed"
+                              : doseStatus === "due"
+                              ? "Due"
+                              : "Upcoming"}
                           </span>
-                          <div className="text-gray-300 text-sm">
-                            Time:{" "}
-                            <span className="text-yellow-200 font-bold">
-                              {new Date(dose.scheduledTime).toLocaleTimeString([], {
-                                hour: "2-digit",
-                                minute: "2-digit",
-                              })}
-                            </span>
-                          </div>
                         </div>
-
-                        {/* Action Buttons  */}
-
-
-                        <div className="flex gap-2 mt-4 md:mt-0">
+                        <div className="text-md text-yellow-200 flex gap-2 items-center">
+                          <Clock className="w-4 h-4" /> 
+                          {new Date(dose.scheduledTime).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                        </div>
+                        <div className="flex gap-3 mt-2">
                           {doseStatus === "upcoming" ? (
-                            <span className="ml-4 font-semibold text-blue-300">Upcoming</span>
+                            <span className="font-semibold text-blue-200">Upcoming</span>
                           ) : doseStatus === "due" ? (
                             <>
                               <button
-                                className="bg-green-400 hover:bg-green-600 text-black px-4 py-2 rounded"
+                                className="bg-green-400 hover:bg-green-500 text-black text-lg px-6 py-3 rounded-xl shadow font-bold"
                                 onClick={() =>
                                   handleIntake(dose.medicineId, dose.scheduledTime, "taken")
                                 }
@@ -251,7 +184,7 @@ export default function Dashboard() {
                                 Taken
                               </button>
                               <button
-                                className="bg-red-400 hover:bg-red-600 text-white px-4 py-2 rounded"
+                                className="bg-red-400 hover:bg-red-500 text-white text-lg px-6 py-3 rounded-xl shadow font-bold"
                                 onClick={() =>
                                   handleIntake(dose.medicineId, dose.scheduledTime, "missed")
                                 }
@@ -259,15 +192,7 @@ export default function Dashboard() {
                                 Not Taken
                               </button>
                             </>
-                          ) : (
-                            <span className="ml-4 font-semibold capitalize">
-                              {doseStatus === "taken"
-                                ? "Taken"
-                                : doseStatus === "late"
-                                ? "Taken Late"
-                                : "Missed"}
-                            </span>
-                          )}
+                          ) : null}
                         </div>
                       </div>
                     </div>
@@ -275,40 +200,78 @@ export default function Dashboard() {
                 })
               )}
             </div>
-
-
-
-            {/* Right: Progress  */}
-
-
-
-            <div className="flex-1 flex flex-col items-center">
-              <h4 className="text-lg font-semibold text-yellow-200 mb-6">
-                Daily Progress
-              </h4>
-              <div className="w-full max-w-xs bg-[#18181b] rounded-xl p-6 shadow-lg border border-yellow-400/30 mb-4">
-                <div className="mb-2 text-gray-200 text-sm">
-                  <div>
-                    Total doses:{" "}
-                    <span className="font-bold text-yellow-400">{total}</span>
-                  </div>
-                  <div>
-                    Taken on time:{" "}
-                    <span className="font-bold text-green-400">{onTime}</span>
-                  </div>
-                  <div>
-                    Taken late:{" "}
-                    <span className="font-bold text-yellow-400">{late}</span>
-                  </div>
-                  <div>
-                    Missed:{" "}
-                    <span className="font-bold text-red-400">{missed}</span>
+            {/* RIGHT - Button group and Progress */}
+            <div className="flex-1 flex flex-col items-end justify-start">
+              {/* Button group - right-aligned at top, bigger buttons */}
+              <div className="flex gap-6 mb-10">
+                <button
+                  onClick={() => navigate("/medicine")}
+                  className="bg-yellow-500 hover:bg-yellow-400 transition text-black text-xl px-8 py-4 rounded-2xl shadow-lg font-extrabold"
+                >
+                  + Add Medicine
+                </button>
+                <button
+                  onClick={() => navigate("/getUserHistory")}
+                  className="bg-gray-800 hover:bg-gray-700 transition text-yellow-300 text-xl px-8 py-4 rounded-2xl shadow-lg font-extrabold"
+                >
+                  Manage Medicine
+                </button>
+              </div>
+              <div className="w-full max-w-lg bg-[#18181b] rounded-3xl p-10 shadow-2xl border-4 border-yellow-400/30 text-center flex flex-col items-center">
+                <h4 className="text-3xl font-bold text-yellow-400 mb-5">
+                  Daily Progress
+                </h4>
+                <div className="relative w-44 h-44 mb-6">
+                  <svg className="absolute inset-0" width="176" height="176">
+                    <circle
+                      cx="88"
+                      cy="88"
+                      r="78"
+                      fill="none"
+                      stroke="#222"
+                      strokeWidth="12"
+                    />
+                    <circle
+                      cx="88"
+                      cy="88"
+                      r="78"
+                      fill="none"
+                      stroke="#FFD700"
+                      strokeWidth="12"
+                      strokeDasharray={490}
+                      strokeDashoffset={490 - (percent / 100) * 490}
+                      strokeLinecap="round"
+                      style={{ transition: "stroke-dashoffset 1s" }}
+                    />
+                  </svg>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <span className="text-5xl font-extrabold text-yellow-400">
+                      {percent}%
+                    </span>
                   </div>
                 </div>
-                <div className="flex items-center gap-2 mt-2">
-                  <div className="flex-1 h-4 rounded bg-gray-700 overflow-hidden shadow-inner flex">
-                    <div className="h-4 bg-green-400" style={{ width: `${greenWidth}%` }} />
-                    <div className="h-4 bg-yellow-400" style={{ width: `${yellowWidth}%` }} />
+                <div className="grid grid-cols-2 gap-4 w-full mb-4">
+                  <div className="flex items-center justify-center gap-2">
+                    <CheckCircle className="w-6 h-6 text-green-400" />
+                    <span className="font-bold text-green-300">On Time: {onTime}</span>
+                  </div>
+                  <div className="flex items-center justify-center gap-2">
+                    <Clock className="w-6 h-6 text-yellow-300" />
+                    <span className="font-bold text-yellow-200">Late: {late}</span>
+                  </div>
+                  <div className="flex items-center justify-center gap-2">
+                    <XCircle className="w-6 h-6 text-red-400" />
+                    <span className="font-bold text-red-300">Missed: {missed}</span>
+                  </div>
+                  <div className="flex items-center justify-center gap-2">
+                    <span className="font-bold text-gray-200">Total: {total}</span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 w-full mt-6">
+                  <div className="flex-1 h-5 rounded-xl bg-gray-800 overflow-hidden shadow-inner flex">
+                    <div className="h-5 bg-green-400" style={{ width: `${total === 0 ? 0 : (onTime / total) * 100}%` }} />
+                    <div className="h-5 bg-yellow-400" style={{ width: `${total === 0 ? 0 : (late / total) * 100}%` }} />
+                    <div className="h-5 bg-red-400" style={{ width: `${total === 0 ? 0 : (missed / total) * 100}%` }} />
                   </div>
                 </div>
               </div>
@@ -319,14 +282,6 @@ export default function Dashboard() {
     </div>
   );
 }
-
-
-
-
-
-
-
-
 
 
 

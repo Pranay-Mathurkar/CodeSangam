@@ -10,6 +10,49 @@ import { User } from "../models/user.model.js";
 import { Medicine } from "../models/medicine.model.js";
 import { Notification } from "../models/notification.model.js";
 
+import { OAuth2Client } from 'google-auth-library';
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+
+
+
+
+const googleLogin = async (req, res) => {
+  const { token } = req.body;
+  if (!token) {
+    return res.status(httpStatus.BAD_REQUEST).json({ message: "Google token required" });
+  }
+  try {
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+    const payload = ticket.getPayload();
+    const { email, name, sub: googleId } = payload;
+
+    let user = await User.findOne({ email });
+    if (!user) {
+      user = new User({ name, email, googleId });
+      await user.save();
+    } else if (!user.googleId) {
+      user.googleId = googleId;
+      await user.save();
+    }
+    // App token generation (same as your normal login)
+    const appToken = crypto.randomBytes(20).toString("hex");
+    user.token = appToken;
+    await user.save();
+
+    return res.status(httpStatus.OK).json({
+      message: "Google login successful",
+      token: appToken,
+      user: { id: user._id, name: user.name, email: user.email }
+    });
+  } catch (e) {
+    return res.status(httpStatus.UNAUTHORIZED).json({ message: "Google Login error: " + e.message });
+  }
+};
+
 
 const createNotification = async (userId, type, medicineName, doseTime, message) => {
   try {
@@ -497,6 +540,7 @@ cron.schedule("* * * * *", async () => {
 });
 
 export {
+  googleLogin,
   login,
   register,
   medicine,

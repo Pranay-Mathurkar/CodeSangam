@@ -1,8 +1,4 @@
 
-
-
-
-
 import Header from "../pages/header";
 import Hero from "../pages/hero";
 import AOS from 'aos';
