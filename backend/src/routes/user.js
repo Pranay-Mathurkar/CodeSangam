@@ -1,6 +1,7 @@
 
  import { Router } from "express";
-
+ import {chatbotHandler} from "../controllers/chatbot.controller.js";
+ router.post("/chatbot",chatbotHandler);
 
 import {
   googleLogin,
