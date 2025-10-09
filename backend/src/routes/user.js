@@ -1,12 +1,10 @@
 
-<<<<<<< HEAD
-//import { Router } from "express";
-//import {chatbotHandler} from "../controllers/chatbot.controller.js";
-=======
  import { Router } from "express";
  //import {chatbotHandler} from "../controllers/chatbot.controller.js";
  //router.post("/chatbot",chatbotHandler);
->>>>>>> 8ed1b15 (user)
+ //import {chatbotHandler} from "../controllers/chatbot.controller.js";
+ //router.post("/chatbot",chatbotHandler);
+
 
 import {
   googleLogin,
@@ -41,3 +39,5 @@ router.delete("/notifications/:id", deleteNotification);
 router.get("/medicine/upcoming", getUpcomingMedicines);  
 
 export default router;
+
+
