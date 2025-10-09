@@ -1,6 +1,6 @@
 
- import { Router } from "express";
- import {chatbotHandler} from "../controllers/chatbot.controller.js";
+import { Router } from "express";
+import {chatbotHandler} from "../controllers/chatbot.controller.js";
 
 import {
   googleLogin,
