@@ -1,6 +1,12 @@
 
-import { Router } from "express";
-import {chatbotHandler} from "../controllers/chatbot.controller.js";
+<<<<<<< HEAD
+//import { Router } from "express";
+//import {chatbotHandler} from "../controllers/chatbot.controller.js";
+=======
+ import { Router } from "express";
+ //import {chatbotHandler} from "../controllers/chatbot.controller.js";
+ //router.post("/chatbot",chatbotHandler);
+>>>>>>> 8ed1b15 (user)
 
 import {
   googleLogin,
@@ -24,7 +30,7 @@ router.post("/login", login);
 router.post("/auth/google", googleLogin);
 
 router.post("/medicine", medicine);
-router.post("/chatbot",chatbotHandler);
+//router.post("/chatbot",chatbotHandler);
 router.get("/getUserHistory", getUserHistory);
 router.put("/medicine/:id", updateMedicineById);
 router.delete("/medicine/:id", deleteMedicineById);
