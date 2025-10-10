@@ -9,7 +9,7 @@ import Home from "./pages/home";
 import Support from "./pages/support";
 import Contact from "./pages/contact";
 import About from "./pages/about";
-import Documentation from "./pages/documentation";
+
 import  Dashboard from "./pages/dashboard";
 import  MedicineForm  from "./pages/medicine";
 import UserMedicinesManager from "./pages/editmedicine";
@@ -31,7 +31,7 @@ export default function App() {
           <Route path="/support" element={<Support />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<About />} />
-          <Route path="/documentation" element={<Documentation />} />
+          
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/medicine" element={<MedicineForm />} />
          <Route path="/getUserHistory" element={<UserMedicinesManager />} />

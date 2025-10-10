@@ -30,17 +30,23 @@ app.get('/home', (req, res) => {
 app.use("/", router);
 
 const start = async () => {
-  
-    const connectionDb = await mongoose.connect("mongodb+srv://pranaymnnit123_db_user:gqiOlgk4bpMtgNEA@cluster0.morcz9e.mongodb.net/")
+  try {
+    const connectionDb = await mongoose.connect(process.env.MONGO_URI);
 
-    console.log(`MONGO Connected DB HOst: ${connectionDb.connection.host}`)
-     app.listen(3000, () => {
-        console.log('Server is running on port 3000');
+    console.log(`MONGO Connected DB Host: ${connectionDb.connection.host}`);
+
+
+    const PORT = process.env.PORT || 3000;
+
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
     });
+  } catch (err) {
+    console.error("Failed to connect to MongoDB", err);
+    process.exit(1);
+  }
+};
 
-
-
-}
 
 
 
