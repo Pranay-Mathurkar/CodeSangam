@@ -5,7 +5,7 @@ const medicineProgressSchema = new mongoose.Schema({
   medicineId: { type: mongoose.Schema.Types.ObjectId, ref: "Medicine", required: true },
   date: { type: Date, required: true },
   dosesTaken: { type: Number, default: 0 },
-  dosesScheduled: { type: Number, required: true }, // Number of doses user should take on this date
+  dosesScheduled: { type: Number, required: true },
 });
 
 const MedicineProgress = mongoose.model("MedicineProgress", medicineProgressSchema);

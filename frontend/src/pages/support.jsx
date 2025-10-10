@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 
-// Modern SupportPage.jsx for Medico
-// Simulates form submission with loading animation (no backend)
 
 export default function SupportPage() {
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
-  const [status, setStatus] = useState("idle"); // idle | sending | success
+  const [status, setStatus] = useState("idle");
 
   function handleChange(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -15,7 +13,7 @@ export default function SupportPage() {
     e.preventDefault();
     setStatus("sending");
 
-    // Simulate sending delay
+  
     setTimeout(() => {
       setStatus("success");
       setForm({ name: "", email: "", subject: "", message: "" });

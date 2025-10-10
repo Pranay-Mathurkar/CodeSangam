@@ -37,7 +37,7 @@ export const AuthProvider = ({ children }) => {
   
   const addAlertedDose = useCallback((doseKey) => {
     setAlertedDoses((prev) => {
-      if (prev.has(doseKey)) return prev; // already alerted
+      if (prev.has(doseKey)) return prev; 
       const updated = new Set(prev);
       updated.add(doseKey);
       localStorage.setItem("alertedDoses", JSON.stringify(Array.from(updated)));
@@ -61,9 +61,7 @@ export const AuthProvider = ({ children }) => {
 
 
 
-  // --- REGISTER ---
-
-
+  
 
 
   const register = async (name, email, password) => {
@@ -212,70 +210,11 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // --- BACKGROUND NOTIFICATIONS ---
+ 
 
 
   useEffect(() => {
-    // if (!user) return;
-
-    // let isRunning = false;
-    // let intervalId;
-
-    // const notifyUpcomingMedicines = async () => {
-    //   if (isRunning) return; // prevent overlapping fetches
-    //   isRunning = true;
-    //   try {
-    //     const token = localStorage.getItem("token");
-    //     if (!token) return;
-
-    //     const res = await api.get(`/medicine/upcoming?token=${token}`, {
-    //       headers: { Authorization: `Bearer ${token}` },
-    //     });
-
-    //     if (res.status === 200 && Array.isArray(res.data)) {
-    //       res.data.forEach((med) => {
-    //         const doseKey = `${med.medicineId || med._id}_${new Date(
-    //           med.scheduledTime
-    //         ).getTime()}`;
-
-    //         if (!alertedDoses.has(doseKey)) {
-    //           addAlertedDose(doseKey);
-    //           alert(
-    //             `Upcoming Medicine: ${med.name} at ${new Date(
-    //               med.scheduledTime
-    //             ).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`
-    //           );
-    //         }
-    //       });
-    //     }
-    //   } catch (err) {
-    //     console.error("Failed to fetch upcoming medicines:", err);
-    //   } finally {
-    //     isRunning = false;
-    //   }
-    // };
-
-    // const checkNewNotifications = async () => {
-    //   try {
-    //     const notifications = await getNotifications();
-    //     notifications.forEach((notif) => {
-    //       alert(`Notification: ${notif.title} - ${notif.message}`);
-    //     });
-    //   } catch {
-    //     /* silent fail */
-    //   }
-    // };
-
-    // // Start once immediately, then repeat every minute
-    // notifyUpcomingMedicines();
-    // checkNewNotifications();
-    // intervalId = setInterval(() => {
-    //   notifyUpcomingMedicines();
-    //   checkNewNotifications();
-    // }, 60000);
-
-    // return () => clearInterval(intervalId);
- // }, [user, alertedDoses, addAlertedDose]);
+   
   }, [user]);
 
   return (

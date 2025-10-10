@@ -42,7 +42,7 @@ const googleLogin = async (req, res) => {
       user.googleId = googleId;
       await user.save();
     }
-    // App token generation (same as your normal login)
+    
     const appToken = crypto.randomBytes(20).toString("hex");
     user.token = appToken;
     await user.save();
@@ -79,7 +79,7 @@ const createNotification = async (userId, type, medicineName, doseTime, message)
 
     await notif.save();
 
-    // Send email to user
+ 
     const user = await User.findById(userId);
     if (user?.email) {
       await sendEmail(
@@ -388,7 +388,7 @@ const trackMedicineIntake = async (req, res) => {
     await medicine.save();
 
 const intakeDate = new Date(scheduledTime);
-intakeDate.setHours(0, 0, 0, 0); // Normalize to date only
+intakeDate.setHours(0, 0, 0, 0);
 
 const progressRecord = await MedicineProgress.findOne({
   userId: medicine.userId,
@@ -413,7 +413,7 @@ if (progressRecord) {
 }
 
 
-    // notification for missed or late
+   
 
 
 

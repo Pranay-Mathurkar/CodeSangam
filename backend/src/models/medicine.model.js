@@ -5,7 +5,7 @@ import mongoose, { Schema } from "mongoose";
 const medicineSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   name: { type: String, required: true },
-  // dosage: { type: String, required: true }, // <- REMOVE THIS LINE
+
   frequencyPerDay: { type: Number, required: true },
   times: [{ type: String, required: true }],
   startDate: { type: Date, required: true },

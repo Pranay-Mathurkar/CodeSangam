@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 
-// Modern ContactPage.jsx for Medico
-// Simulates form submission with loading animation (no backend)
+
 
 export default function ContactPage() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
-  const [status, setStatus] = useState("idle"); // idle | sending | success
+  const [status, setStatus] = useState("idle"); 
 
   function handleChange(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -15,7 +14,7 @@ export default function ContactPage() {
     e.preventDefault();
     setStatus("sending");
 
-    // Simulate message sending delay
+    
     setTimeout(() => {
       setStatus("success");
       setForm({ name: "", email: "", message: "" });

@@ -20,15 +20,18 @@ function WeeklyProgressChart() {
    for (let i = 0; i < 7; i++) {
   const day = new Date();
   day.setDate(day.getDate() - (6 - i));
-  // Build the "YYYY-MM-DD" key for comparison
+
+
   const dayString = day.toISOString().slice(0, 10);
 
-  // Chart label: "Mon (10/07)"
+  
+
   labels.push(
     `${day.toLocaleDateString("en-US", { weekday: "short" })} (${day.getMonth() + 1}/${day.getDate()})`
   );
 
-  // Find the progress entry for this exact day
+ 
+  
   const progressDay = data.find((p) => p._id === dayString);
 
   if (progressDay && progressDay.dosesScheduled > 0) {

@@ -110,9 +110,7 @@ export default function Notifications() {
                     {notif.medicineName || "Medicine Reminder"}
                   </h4>
                   <p className="text-gray-200 text-sm mt-1">{notif.message}</p>
-                  {/* <p className="text-xs text-gray-500 mt-2">
-                    {new Date(notif.doseTime || notif.createdAt).toLocaleString()}
-                  </p> */}
+                
                 </div>
                 <button
                   title="Delete notification"

@@ -21,10 +21,10 @@ export default function About() {
 
   return (
     <section className="min-h-screen bg-black text-gray-200 flex flex-col items-center justify-center px-6 py-20 relative overflow-hidden">
-      {/* Golden Ambient Glow */}
+    
       <div className="absolute inset-0 bg-gradient-radial from-yellow-500/10 via-transparent to-black blur-3xl pointer-events-none"></div>
 
-      {/* Heading */}
+    
       <motion.h1
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -34,7 +34,7 @@ export default function About() {
         About Us
       </motion.h1>
 
-      {/* About Content */}
+     
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
@@ -58,7 +58,7 @@ export default function About() {
         </p>
       </motion.div>
 
-      {/* Team Section */}
+      
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -77,7 +77,7 @@ export default function About() {
         ))}
       </motion.div>
 
-      {/* Tagline */}
+     
       <motion.p
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

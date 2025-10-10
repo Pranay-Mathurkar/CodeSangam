@@ -202,7 +202,7 @@ export default function Dashboard() {
             </div>
             {/* RIGHT - Button group and Progress */}
             <div className="flex-1 flex flex-col items-end justify-start">
-              {/* Button group - right-aligned at top, bigger buttons */}
+              {/* Button group */}
               <div className="flex gap-6 mb-10">
                 <button
                   onClick={() => navigate("/medicine")}

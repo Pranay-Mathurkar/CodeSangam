@@ -13,7 +13,7 @@ import {
 import { Edit, Trash2, Calendar, Clock, Pill } from "lucide-react";
 import { AuthContext } from "../contexts/AuthContext";
 
-// Helper function to format time strings like "HH:mm" to localized string
+
 const toLocalTimeString = (timeStr) => {
   if (!timeStr) return "";
   const [hours, minutes] = timeStr.split(":").map(Number);
@@ -23,7 +23,7 @@ const toLocalTimeString = (timeStr) => {
   return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 };
 
-// Helper function to convert date to yyyy-MM-dd for input value
+
 const toLocalDateInputValue = (dateStr) => {
   if (!dateStr) return "";
   const date = new Date(dateStr);
