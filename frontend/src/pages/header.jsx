@@ -53,20 +53,24 @@ const Header = () => {
         <Link
           to="/dashboard"
           onClick={(e) => handleProtectedNav(e, "/dashboard")}
-          className="hover:text-gray-400 transition-colors duration-300"
+          className="m-5 px-6 py-3 bg-white text-gray-800 font-semibold rounded-full shadow-md 
+              hover:bg-gray-200 transition-colors duration-300 text-center"
         >
           My Account
         </Link>
 
-        <Link to="/about" className="hover:text-gray-400 transition-colors duration-300">
+        <Link to="/about" className="m-5 px-6 py-3 bg-white text-gray-800 font-semibold rounded-full shadow-md 
+              hover:bg-gray-200 transition-colors duration-300 text-center">
           About Us
         </Link>
 
-        <Link to="/contact" className="hover:text-gray-400 transition-colors duration-300">
+        <Link to="/contact" className="m-5 px-6 py-3 bg-white text-gray-800 font-semibold rounded-full shadow-md 
+              hover:bg-gray-200 transition-colors duration-300 text-center">
           Contact
         </Link>
 
-        <Link to="/support" className="hover:text-gray-400 transition-colors duration-300">
+        <Link to="/support" className="m-5 px-6 py-3 bg-white text-gray-800 font-semibold rounded-full shadow-md 
+              hover:bg-gray-200 transition-colors duration-300 text-center">
           Support
         </Link>
       </nav>
@@ -125,15 +129,18 @@ const Header = () => {
         <nav className="flex flex-col gap-6 px-6 mt-6">
         
 
-          <Link to="/about" className="hover:text-gray-400 transition-colors">
+          <Link to="/about" className="m-5 px-6 py-3 bg-white text-gray-800 font-semibold rounded-full shadow-md 
+              hover:bg-gray-200 transition-colors duration-300 text-center">
             About Us
           </Link>
 
-          <Link to="/contact" className="hover:text-gray-400 transition-colors">
+          <Link to="/contact" className="m-5 px-6 py-3 bg-white text-gray-800 font-semibold rounded-full shadow-md 
+              hover:bg-gray-200 transition-colors duration-300 text-center">
             Contact
           </Link>
 
-          <Link to="/support" className="hover:text-gray-400 transition-colors">
+          <Link to="/support" className="m-5 px-6 py-3 bg-white text-gray-800 font-semibold rounded-full shadow-md 
+              hover:bg-gray-200 transition-colors duration-300 text-center">
             Support
           </Link>
 
