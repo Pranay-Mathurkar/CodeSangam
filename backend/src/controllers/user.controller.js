@@ -5,7 +5,7 @@ import httpStatus from "http-status";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 import cron from "node-cron";
-import { zonedTimeToUtc, utcToZonedTime, format } from 'date-fns-tz';
+import { zonedTimeToUtc, format } from 'date-fns-tz';
 
 import { User } from "../models/user.model.js";
 import { Medicine } from "../models/medicine.model.js";
@@ -338,24 +338,20 @@ const getTodayDoses = async (req, res) => {
     if (!user) throw Error("User not found");
     const medicines = await Medicine.find({ userId: user._id });
 
-    // Use IST timezone
     
-    const timeZone = 'Asia/Kolkata'; 
+    const timeZone = 'Asia/Kolkata';
     const now = new Date();
-    const zonedNow = utcToZonedTime(now, timeZone);
    
-    const todayStr = format(zonedNow, 'yyyy-MM-dd', { timeZone });
+    const todayStr = format(now, 'yyyy-MM-dd', { timeZone });
 
     const doses = [];
 
     medicines.forEach((med) => {
       med.times.forEach((time) => {
-        
+       
         const scheduledTimeInIST = new Date(`${todayStr}T${time}:00`);
-     
         const scheduledTime = zonedTimeToUtc(scheduledTimeInIST, timeZone);
 
-       
         if (scheduledTime >= med.startDate && scheduledTime <= med.endDate) {
           const log = (med.takenLogs || []).find(
             (l) =>
@@ -377,6 +373,7 @@ const getTodayDoses = async (req, res) => {
     res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: `Failed: ${e.message}` });
   }
 };
+
 
 //  TRACK MEDICINE INTAKE
 
