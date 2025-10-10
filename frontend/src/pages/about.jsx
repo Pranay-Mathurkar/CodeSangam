@@ -4,12 +4,12 @@ export default function About() {
   const team = [
     {
       name: "Shubhankit Pathak",
-      role: "Team Leader | Frontend & Chatbot",
+      role: "Frontend & Chatbot",
       description: "B.Tech 2nd Year student, worked on Chatbot and Frontend",
     },
     {
       name: "Pranay Mathurkar",
-      role: "Backend Developer",
+      role: "Team Leader | Backend Developer",
       description: "B.Tech 2nd Year student, handled backend architecture and API design",
     },
     {
