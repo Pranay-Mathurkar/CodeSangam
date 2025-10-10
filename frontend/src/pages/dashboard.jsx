@@ -13,6 +13,7 @@ const getPercent = (onTime, late, missed, total) => total === 0 ? 0 : Math.round
 
 export default function Dashboard() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isChatbotOpen, setIsChatbotOpen] = useState(false);
   const { user, trackIntake } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -121,9 +122,17 @@ export default function Dashboard() {
             aria-label="Open sidebar"
           >
             <Menu className="h-6 w-6 text-yellow-400" />
-          </button>
-          <Topbar />
-        </div>
+           </button>
+            <div className="flex items-center gap-6">
+              <Topbar />
+              <button
+                onClick={() => setIsChatbotOpen(true)}
+                className="bg-blue-700 text-white px-5 py-2 rounded-full font-bold ml-4"
+              >
+                Talk to Bot
+              </button>
+            </div>
+          </div> 
 
         <main className="p-8 flex-1">
           <h2 className="text-4xl font-bold text-yellow-400 mb-6 drop-shadow">
@@ -283,17 +292,14 @@ export default function Dashboard() {
         </main>
       </div>
       </div>
-      <div
-        style={{
-          position: 'fixed',
-          bottom: 32,
-          right: 32,
-          zIndex: 1000,
-          boxShadow: '0px 2px 12px rgba(0,0,0,0.1)'
-        }}
-      >
-        <ChatbotWidget userId={user?._id || user?.id} />
-    </div>
+      {/* ChatbotWidget Popup */}
+      {isChatbotOpen && (
+        <ChatbotWidget
+          userId={user?._id || user?.id}
+          open={isChatbotOpen}
+          onClose={() => setIsChatbotOpen(false)}
+        />
+      )}
   </>
   );
 }
