@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 
-// Simple ContactPage.jsx for Alchemist's Grimoire
-// Black & gold theme, no backend, all frontend only
+
 
 export default function ContactPage() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState("idle"); // idle | sending | success
 
   function handleChange(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -13,21 +12,35 @@ export default function ContactPage() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    setSubmitted(true);
-    setForm({ name: "", email: "", message: "" });
+    setStatus("sending");
+
+   
+    setTimeout(() => {
+      setStatus("success");
+      setForm({ name: "", email: "", message: "" });
+    }, 2000);
   }
 
   return (
-    <div className="min-h-screen bg-[#070606] text-gray-100 flex flex-col items-center py-12 px-6">
-      <header className="mb-8 text-center">
-        <h1 className="text-3xl font-bold text-[#d4af37]">Contact Alchemist's Grimoire</h1>
-        <p className="text-gray-400 mt-2">We would love to hear from you!</p>
+    <div className="min-h-screen bg-gradient-to-b from-[#000000] via-[#0a0a0a] to-[#1a1a1a] text-gray-100 flex flex-col items-center py-12 px-6">
+      <header className="mb-10 text-center">
+        <h1 className="text-4xl font-bold text-[#d4af37] drop-shadow-[0_0_15px_rgba(212,175,55,0.3)]">
+          Contact Medico
+        </h1>
+        <p className="text-gray-400 mt-3 max-w-md mx-auto">
+          We'd love to hear from you. Send us your thoughts or feedback below.
+        </p>
       </header>
 
-      <main className="w-full max-w-md bg-black/60 p-6 rounded-2xl shadow-2xl border border-[#d4af37]/20">
-        {submitted ? (
-          <div className="text-center text-[#d4af37] font-semibold">
-            Thank you! Your message has been sent.
+      <main className="w-full max-w-md bg-black/60 p-8 rounded-2xl shadow-[0_0_25px_rgba(212,175,55,0.15)] border border-[#d4af37]/20 transition-all duration-300 hover:shadow-[0_0_35px_rgba(212,175,55,0.3)]">
+        {status === "success" ? (
+          <div className="text-center text-[#d4af37] font-semibold animate-fade-in">
+            ✨ Thank you! Your message has been sent successfully.
+          </div>
+        ) : status === "sending" ? (
+          <div className="flex flex-col items-center justify-center text-[#ffd873] font-medium">
+            <div className="w-8 h-8 border-4 border-[#d4af37] border-t-transparent rounded-full animate-spin mb-3"></div>
+            Sending your message...
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -37,7 +50,7 @@ export default function ContactPage() {
               onChange={handleChange}
               placeholder="Your Name"
               required
-              className="px-3 py-2 rounded-md bg-black/40 placeholder-gray-400 ring-1 ring-[#d4af37]/20 focus:outline-none"
+              className="px-3 py-2 rounded-md bg-black/40 placeholder-gray-400 ring-1 ring-[#d4af37]/20 focus:ring-[#d4af37]/40 focus:outline-none"
             />
 
             <input
@@ -47,7 +60,7 @@ export default function ContactPage() {
               onChange={handleChange}
               placeholder="Your Email"
               required
-              className="px-3 py-2 rounded-md bg-black/40 placeholder-gray-400 ring-1 ring-[#d4af37]/20 focus:outline-none"
+              className="px-3 py-2 rounded-md bg-black/40 placeholder-gray-400 ring-1 ring-[#d4af37]/20 focus:ring-[#d4af37]/40 focus:outline-none"
             />
 
             <textarea
@@ -57,7 +70,7 @@ export default function ContactPage() {
               placeholder="Your Message"
               rows={5}
               required
-              className="px-3 py-2 rounded-md bg-black/40 placeholder-gray-400 ring-1 ring-[#d4af37]/20 focus:outline-none"
+              className="px-3 py-2 rounded-md bg-black/40 placeholder-gray-400 ring-1 ring-[#d4af37]/20 focus:ring-[#d4af37]/40 focus:outline-none"
             />
 
             <button
@@ -71,7 +84,7 @@ export default function ContactPage() {
       </main>
 
       <footer className="mt-12 text-gray-500 text-sm">
-        © {new Date().getFullYear()} Alchemist's Grimoire
+        © {new Date().getFullYear()} Medico
       </footer>
     </div>
   );
