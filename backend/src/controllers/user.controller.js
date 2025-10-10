@@ -9,7 +9,7 @@ import cron from "node-cron";
 import { User } from "../models/user.model.js";
 import { Medicine } from "../models/medicine.model.js";
 import { Notification } from "../models/notification.model.js";
-import { sendEmail } from "../utils/emailservice.js";
+import { sendEmail } from "../utils/emailservise.js";
 
 
 import { OAuth2Client } from 'google-auth-library';
