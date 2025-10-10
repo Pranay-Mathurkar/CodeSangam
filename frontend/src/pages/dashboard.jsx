@@ -1,3 +1,4 @@
+import ChatbotWidget from '../components/ChatbotWidget.jsx';
 import React, { useContext, useState, useEffect } from "react";
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
@@ -89,6 +90,7 @@ export default function Dashboard() {
   };
 
   return (
+    <>
     <div className="flex min-h-screen bg-black text-gray-100 relative">
       {/* Sidebar */}
       {isSidebarOpen && (
@@ -275,7 +277,19 @@ export default function Dashboard() {
           </div>
         </main>
       </div>
+      </div>
+      <div
+        style={{
+          position: 'fixed',
+          bottom: 32,
+          right: 32,
+          zIndex: 1000,
+          boxShadow: '0px 2px 12px rgba(0,0,0,0.1)'
+        }}
+      >
+        <ChatbotWidget userId={user?._id || user?.id} />
     </div>
+  </>
   );
 }
 
