@@ -5,6 +5,7 @@ import httpStatus from "http-status";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 import cron from "node-cron";
+import { zonedTimeToUtc, utcToZonedTime, format } from 'date-fns-tz';
 
 import { User } from "../models/user.model.js";
 import { Medicine } from "../models/medicine.model.js";
@@ -337,12 +338,24 @@ const getTodayDoses = async (req, res) => {
     if (!user) throw Error("User not found");
     const medicines = await Medicine.find({ userId: user._id });
 
-    const todayStr = new Date().toISOString().substring(0, 10);
+    // Use IST timezone
+    
+    const timeZone = 'Asia/Kolkata'; 
+    const now = new Date();
+    const zonedNow = utcToZonedTime(now, timeZone);
+   
+    const todayStr = format(zonedNow, 'yyyy-MM-dd', { timeZone });
+
     const doses = [];
 
     medicines.forEach((med) => {
       med.times.forEach((time) => {
-        const scheduledTime = new Date(`${todayStr}T${time}`);
+        
+        const scheduledTimeInIST = new Date(`${todayStr}T${time}:00`);
+     
+        const scheduledTime = zonedTimeToUtc(scheduledTimeInIST, timeZone);
+
+       
         if (scheduledTime >= med.startDate && scheduledTime <= med.endDate) {
           const log = (med.takenLogs || []).find(
             (l) =>
@@ -352,7 +365,7 @@ const getTodayDoses = async (req, res) => {
           doses.push({
             medicineId: med._id,
             name: med.name,
-            scheduledTime,
+            scheduledTime, 
             log: log || null,
           });
         }
