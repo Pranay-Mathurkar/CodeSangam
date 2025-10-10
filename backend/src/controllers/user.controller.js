@@ -5,7 +5,7 @@ import httpStatus from "http-status";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 import cron from "node-cron";
-import { zonedTimeToUtc, format } from 'date-fns-tz';
+import { format } from 'date-fns-tz';
 
 import { User } from "../models/user.model.js";
 import { Medicine } from "../models/medicine.model.js";
@@ -338,30 +338,25 @@ const getTodayDoses = async (req, res) => {
     if (!user) throw Error("User not found");
     const medicines = await Medicine.find({ userId: user._id });
 
-    
     const timeZone = 'Asia/Kolkata';
     const now = new Date();
-   
-    const todayStr = format(now, 'yyyy-MM-dd', { timeZone });
+    const todayStr = format(now, 'yyyy-MM-dd', { timeZone }); 
 
     const doses = [];
-
     medicines.forEach((med) => {
       med.times.forEach((time) => {
-       
-        const scheduledTimeInIST = new Date(`${todayStr}T${time}:00`);
-        const scheduledTime = zonedTimeToUtc(scheduledTimeInIST, timeZone);
 
+     
+
+        const scheduledTime = new Date(`${todayStr}T${time}:00+05:30`);
         if (scheduledTime >= med.startDate && scheduledTime <= med.endDate) {
           const log = (med.takenLogs || []).find(
-            (l) =>
-              new Date(l.scheduledTime).toISOString() ===
-              scheduledTime.toISOString()
+            (l) => new Date(l.scheduledTime).toISOString() === scheduledTime.toISOString()
           );
           doses.push({
             medicineId: med._id,
             name: med.name,
-            scheduledTime, 
+            scheduledTime,
             log: log || null,
           });
         }
