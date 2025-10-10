@@ -9,6 +9,8 @@ import cron from "node-cron";
 import { User } from "../models/user.model.js";
 import { Medicine } from "../models/medicine.model.js";
 import { Notification } from "../models/notification.model.js";
+import { sendEmail } from "../utils/emailservise.js";
+
 
 import { OAuth2Client } from 'google-auth-library';
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
@@ -53,7 +55,6 @@ const googleLogin = async (req, res) => {
   }
 };
 
-
 const createNotification = async (userId, type, medicineName, doseTime, message) => {
   try {
     const recentNotif = await Notification.findOne({
@@ -75,8 +76,18 @@ const createNotification = async (userId, type, medicineName, doseTime, message)
     });
 
     await notif.save();
+
+    // Send email to user
+    const user = await User.findById(userId);
+    if (user?.email) {
+      await sendEmail(
+        user.email,
+        `Medico - Medicine ${type === "reminder" ? "Reminder" : type.charAt(0).toUpperCase() + type.slice(1)}`,
+        message
+      );
+    }
   } catch (err) {
-    console.error(" Failed to create notification:", err.message);
+    console.error("Failed to create notification:", err.message);
   }
 };
 
