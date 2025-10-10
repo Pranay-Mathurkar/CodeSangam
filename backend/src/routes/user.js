@@ -23,7 +23,7 @@ router.post("/register", register);
 router.post("/login", login);
 router.post("/auth/google", googleLogin);
 router.post("/medicine", medicine);
-router.post("/api/chatbot", chatbotHandler);
+router.post("/chatbot", chatbotHandler);
 router.get("/getUserHistory", getUserHistory);
 router.put("/medicine/:id", updateMedicineById);
 router.delete("/medicine/:id", deleteMedicineById);
