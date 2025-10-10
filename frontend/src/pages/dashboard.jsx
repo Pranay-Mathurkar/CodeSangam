@@ -5,6 +5,8 @@ import Topbar from "../components/Topbar";
 import { Menu, X, CheckCircle, Clock, XCircle } from "lucide-react"; 
 import { AuthContext } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import WeeklyProgressChart from '../components/GraphCard';
+
 
 
 const getPercent = (onTime, late, missed, total) => total === 0 ? 0 : Math.round(((onTime + late * 0.5) / total) * 100);
@@ -275,6 +277,9 @@ export default function Dashboard() {
               </div>
             </div>
           </div>
+
+
+          <WeeklyProgressChart />
         </main>
       </div>
       </div>

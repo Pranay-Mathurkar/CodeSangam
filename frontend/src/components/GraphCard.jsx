@@ -1,40 +1,74 @@
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import React, { useEffect, useState } from "react";
+import { Bar } from "react-chartjs-2";
+import axios from "axios";
+import Chart from 'chart.js/auto';
 
-export default function GraphCard() {
-  const data = [
-    { day: "Mon", progress: 70 },
-    { day: "Tue", progress: 85 },
-    { day: "Wed", progress: 60 },
-    { day: "Thu", progress: 90 },
-    { day: "Fri", progress: 75 },
-    { day: "Sat", progress: 95 },
-    { day: "Sun", progress: 80 },
-  ];
+function WeeklyProgressChart() {
+  const [chartData, setChartData] = useState(null);
+
+  useEffect(() => {
+    async function fetchProgress() {
+      const token = localStorage.getItem("token");
+      const res = await axios.get("http://localhost:3000/progress/weekly", {
+        params: { token },
+      });
+      const data = res.data;
+
+     
+      const labels = [];
+      const percentages = [];
+   for (let i = 0; i < 7; i++) {
+  const day = new Date();
+  day.setDate(day.getDate() - (6 - i));
+  // Build the "YYYY-MM-DD" key for comparison
+  const dayString = day.toISOString().slice(0, 10);
+
+  // Chart label: "Mon (10/07)"
+  labels.push(
+    `${day.toLocaleDateString("en-US", { weekday: "short" })} (${day.getMonth() + 1}/${day.getDate()})`
+  );
+
+  // Find the progress entry for this exact day
+  const progressDay = data.find((p) => p._id === dayString);
+
+  if (progressDay && progressDay.dosesScheduled > 0) {
+    percentages.push(
+      Math.round((progressDay.dosesTaken / progressDay.dosesScheduled) * 100)
+    );
+  } else {
+    percentages.push(0);
+  }
+}
+
+
+      setChartData({
+        labels,
+        datasets: [
+          {
+            label: "Adherence (%)",
+            data: percentages,
+            backgroundColor: "rgba(255, 206, 86, 0.6)",
+            borderColor: "rgba(255, 206, 86, 1)",
+            borderWidth: 2,
+          },
+        ],
+      });
+    }
+    fetchProgress();
+  }, []);
+
+  if (!chartData) return <div className="text-yellow-400 mt-8">Loading progress graph...</div>;
 
   return (
-    <div className="bg-black p-6 rounded-2xl shadow-[0_0_15px_rgba(255,215,0,0.3)] hover:shadow-[0_0_25px_rgba(255,215,0,0.4)] transition h-full">
-      <h3 className="text-lg font-semibold text-yellow-400 mb-4">📊 Daily Progress</h3>
-      <div className="h-64">
-        <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={data}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#333" />
-            <XAxis dataKey="day" stroke="#aaa" />
-            <YAxis stroke="#aaa" />
-            <Tooltip
-              contentStyle={{ backgroundColor: "#111", border: "none" }}
-              labelStyle={{ color: "#fff" }}
-            />
-            <Line
-              type="monotone"
-              dataKey="progress"
-              stroke="#FFD700"
-              strokeWidth={3}
-              dot={{ r: 5, strokeWidth: 2, fill: "#FFD700" }}
-              activeDot={{ r: 8 }}
-            />
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
+    <div className="p-6 mt-8 rounded-3xl bg-gray-900 border border-yellow-400/30 shadow-lg max-w-2xl mx-auto">
+      <h3 className="text-xl text-yellow-400 text-center font-bold mb-4">Weekly Progress</h3>
+      <Bar data={chartData} options={{
+        scales: {
+          y: { beginAtZero: true, max: 100 }
+        }
+      }} />
     </div>
   );
 }
+
+export default WeeklyProgressChart;

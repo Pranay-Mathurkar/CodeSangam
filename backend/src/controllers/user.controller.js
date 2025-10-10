@@ -10,6 +10,7 @@ import { User } from "../models/user.model.js";
 import { Medicine } from "../models/medicine.model.js";
 import { Notification } from "../models/notification.model.js";
 import { sendEmail } from "../utils/emailservise.js";
+import { MedicineProgress } from "../models/progress.model.js";
 
 
 import { OAuth2Client } from 'google-auth-library';
@@ -386,6 +387,30 @@ const trackMedicineIntake = async (req, res) => {
     medicine.takenLogs.push({ scheduledTime, actualTime, status });
     await medicine.save();
 
+const intakeDate = new Date(scheduledTime);
+intakeDate.setHours(0, 0, 0, 0); // Normalize to date only
+
+const progressRecord = await MedicineProgress.findOne({
+  userId: medicine.userId,
+  medicineId: medicine._id,
+  date: intakeDate,
+});
+
+if (progressRecord) {
+  if (status === "taken" || status === "late") {
+    progressRecord.dosesTaken += 1;
+    await progressRecord.save();
+  }
+} else {
+  const newProgress = new MedicineProgress({
+    userId: medicine.userId,
+    medicineId: medicine._id,
+    date: intakeDate,
+    dosesTaken: status === "taken" || status === "late" ? 1 : 0,
+    dosesScheduled: medicine.frequencyPerDay,
+  });
+  await newProgress.save();
+}
 
 
     // notification for missed or late
