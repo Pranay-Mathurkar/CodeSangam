@@ -10,7 +10,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 export const AuthContext = createContext({});
 
 const api = axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: "https://medico-backend-hjxm.onrender.com",
 });
 
 export const AuthProvider = ({ children }) => {

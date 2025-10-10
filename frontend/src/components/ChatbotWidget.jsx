@@ -67,7 +67,7 @@ export default function ChatbotWidget({ userId }) {
     if (!input) return;
     setMessages(msgs => [...msgs, { user: true, text: input }]);
     try {
-      const res = await axios.post('http://localhost:3000/api/chatbot', { message: input, userId });
+      const res = await axios.post('https://medico-backend-hjxm.onrender.com/api/chatbot', { message: input, userId });
       setMessages(msgs => [...msgs, { user: false, text: res.data.reply }]);
     } catch {
       setMessages(msgs => [...msgs, { user: false, text: "Error: Unable to get reply." }]);

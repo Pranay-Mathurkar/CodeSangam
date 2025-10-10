@@ -19,7 +19,7 @@ export default function Notifications() {
     try {
       setLoading(true);
       const token = localStorage.getItem("token");
-      await fetch(`http://localhost:3000/notifications/${notifId}`, {
+      await fetch(`https://medico-backend-hjxm.onrender.com/notifications/${notifId}`, {
 
 
 

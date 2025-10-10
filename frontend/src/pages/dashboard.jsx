@@ -29,7 +29,7 @@ export default function Dashboard() {
     setLoading(true);
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`http://localhost:3000/medicine/today?token=${token}`);
+      const res = await fetch(`https://medico-backend-hjxm.onrender.com/medicine/today?token=${token}`);
       const json = await res.json();
       setDoses(Array.isArray(json) ? json : []);
     } catch {

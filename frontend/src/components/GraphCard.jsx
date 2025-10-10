@@ -9,7 +9,7 @@ function WeeklyProgressChart() {
   useEffect(() => {
     async function fetchProgress() {
       const token = localStorage.getItem("token");
-      const res = await axios.get("http://localhost:3000/progress/weekly", {
+      const res = await axios.get("https://medico-backend-hjxm.onrender.com/progress/weekly", {
         params: { token },
       });
       const data = res.data;
