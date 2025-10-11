@@ -1,44 +1,51 @@
-🏥 Medico Tracker
-Smart Medicine Reminders & Wellness Dashboard.
+#🏥 Medico 
+
+**Smart Medicine Reminders & Wellness Dashboard.**
+
 Medico Tracker is a modern health management platform built using React, Node.js, Socket.IO, and MongoDB. It helps users maintain their medicine schedule, track adherence, and receive dose reminders, supporting both individuals and caregivers to achieve better daily wellness.
 
 [🌐 Live Demo](https://medico-tracker.onrender.com) · [💻 GitHub Repository](https://github.com/Pranay-Mathurkar/CodeSangam)
 
-✨ Features
-💊 Medicine Reminders – Get timely alerts for medication schedule, dosage, and refills.​
+---
 
-📉 Adherence Tracking – Track doses taken, missed, or late and view historical logs.​
+## ✨ Features
 
-💬 AI Health Assistant – Chatbot for dose guidance, symptom logging, and advice.​​
+-💊 **Medicine Reminders** – Get timely alerts for medication schedule, dosage, and refills.​
 
-👤 Secure Authentication – Google OAuth and password-based login.​​
+-📉 **Adherence Tracking** – Track doses taken, missed, or late and view historical logs.​
 
-📊 Progress Dashboard – Interactive charts to visualize adherence and intake history.​
+-💬 **AI Health Assistant** – Chatbot for dose guidance, symptom logging, and advice.​​
 
-🔔 Notifications – Real-time notifications and reminders, even if device is silent or locked.​
+-👤 **Secure Authentication** – Google OAuth and password-based login.​​
 
-🗂️ Appointment Tracking – Schedule and manage doctor appointments alongside medicine reminders.​
+-📊 **Progress Dashboard** – Interactive charts to visualize adherence and intake history.​
 
-🛡️ Data Security – Personal health data stored securely; optional device backup and privacy controls.​
+-🔔 **Notifications** – Real-time notifications and reminders, even if device is silent or locked.​
 
-💻 Tech Stack
-Frontend: React.js, Tailwind CSS, Vite, Material UI.​
+-🛡️ **Data Security** – Personal health data stored securely.
 
-Backend: Node.js, Express.js, Socket.IO.​
+---
 
-Database: MongoDB Atlas (sessions and user data).​
+## 💻 Tech Stack 
 
-Auth: JWT, Google OAuth.​
+ -**Frontend **: React.js, Tailwind CSS, Vite, Material UI.​
 
-Notification: Node-cron, Nodemailer.​
+-**Backend**: Node.js, Express.js, Socket.IO.​
 
-Charting: Chart.js, Recharts.​
+-**Database**: MongoDB Atlas (sessions and user data).​
 
-CI/CD: GitHub Actions.​
+-**Auth**: JWT-like token, Google OAuth.​
 
-Hosting: Render.​
+-**Notification**: Node-cron, Nodemailer.​
 
-🔧 How It Works
+-**Charting**: Chart.js, Recharts.​
+
+-**CI/CD**: GitHub Actions.​
+
+-**Hosting**: Render.​
+
+##🔧 How It Works
+
 Register or log in using email/password or Google OAuth.​
 
 Add medicines—set frequency, times, and duration. Update and delete as needed.​​
@@ -51,8 +58,11 @@ Use built-in AI assistant for adherence help, schedule info, or wellness tips.�
 
 Data is securely stored and privacy protected.​​
 
-🚀 Getting Started
-Prerequisites
-Node.js (v14+)
-npm
-MongoDB Atlas (for sessions/auth data)
+---
+
+## 🚀 Getting Started
+
+###Prerequisites
+-Node.js (v14+)
+-npm
+-MongoDB Atlas (for sessions/auth data)
