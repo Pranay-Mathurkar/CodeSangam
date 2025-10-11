@@ -1,53 +1,60 @@
-🏥 Medico
-Smart Medicine Reminders & Wellness Dashboard
+🏥 Medico Tracker
+Smart Medicine Reminders & Wellness Dashboard.
+Medico Tracker is a modern health management platform built using React, Node.js, Socket.IO, and MongoDB. It helps users maintain their medicine schedule, track adherence, and receive dose reminders, supporting both individuals and caregivers to achieve better daily wellness.
 
-Medico is an innovative health platform developed to help users manage their medicine schedules, track progress, and maintain wellness—all through an intuitive web interface. The app empowers daily healthcare with timely dose reminders, interactive dashboards, and a supportive wellness ecosystem.
+[🌐 Live Demo](https://medico-tracker.onrender.com) · [💻 GitHub Repository](https://github.com/Pranay-Mathurkar/CodeSangam)
 
 ✨ Features
-💊 Medicine Reminders: Notifies users when it's time to take each medicine.​
+💊 Medicine Reminders – Get timely alerts for medication schedule, dosage, and refills.​
 
-📈 Progress Tracking: Weekly graphs and dashboards show dose adherence and progress.​
+📉 Adherence Tracking – Track doses taken, missed, or late and view historical logs.​
 
-🔔 Notifications: Get real-time reminders for missed or late doses as well as upcoming schedules.​
+💬 AI Health Assistant – Chatbot for dose guidance, symptom logging, and advice.​​
 
-👤 Authentication: Secure login via email/password and Google OAuth.​
+👤 Secure Authentication – Google OAuth and password-based login.​​
 
-📝 Medicine Management: Add, update, and delete medicines easily through a built-in dashboard.​
+📊 Progress Dashboard – Interactive charts to visualize adherence and intake history.​
 
-🗂️ User History: View historical medicine intake, progress, and schedule at a glance.​
+🔔 Notifications – Real-time notifications and reminders, even if device is silent or locked.​
 
-🤖 AI Chatbot: Personal health assistant via chat interface for guidance and dose info.​
+🗂️ Appointment Tracking – Schedule and manage doctor appointments alongside medicine reminders.​
 
-📱 Responsive UI: Works on any device with a sleek gold-accented interface.​
+🛡️ Data Security – Personal health data stored securely; optional device backup and privacy controls.​
 
 💻 Tech Stack
 Frontend: React.js, Tailwind CSS, Vite, Material UI.​
 
-Backend: Node.js, Express.js, MongoDB, Socket.IO.​
+Backend: Node.js, Express.js, Socket.IO.​
 
-Authentication: JWT and Google OAuth.​
+Database: MongoDB Atlas (sessions and user data).​
 
-Notifications & Reminders: Node-cron, Nodemailer (email alerts).​
+Auth: JWT, Google OAuth.​
+
+Notification: Node-cron, Nodemailer.​
 
 Charting: Chart.js, Recharts.​
 
 CI/CD: GitHub Actions.​
 
-Hosting: Render.com (demo).​
+Hosting: Render.​
 
 🔧 How It Works
-Users sign up with secure email/password or Google login.​
+Register or log in using email/password or Google OAuth.​
 
-Add and manage medicines, specifying timing, frequency, and duration.​
+Add medicines—set frequency, times, and duration. Update and delete as needed.​​
 
-The system sends automatic reminders and records intake, including missed or late doses.​
+Receive automated reminders for doses and appointments; record each intake event.​​
 
-Progress and adherence are visualized in dashboards and graphs for health empowerment.​
+Monitor progress through dashboards, adherence graphs, and history logs.​
 
-AI assistant answers wellness or schedule queries, using medicine and notification history.​
+Use built-in AI assistant for adherence help, schedule info, or wellness tips.​
+
+Data is securely stored and privacy protected.​​
 
 🚀 Getting Started
 Prerequisites
-Node.js (version 14 or higher).​
-About
-Medico is designed for performers and everyday users alike—making health management seamless, smart, and visually engaging.
+Node.js (v14+)
+
+npm
+
+MongoDB Atlas (for sessions/auth data)
