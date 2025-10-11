@@ -1,5 +1,5 @@
-#🏥 Medico 
-
+# 🏥 Medico 
+ 
 **Smart Medicine Reminders & Wellness Dashboard.**
 
 Medico Tracker is a modern health management platform built using React, Node.js, Socket.IO, and MongoDB. It helps users maintain their medicine schedule, track adherence, and receive dose reminders, supporting both individuals and caregivers to achieve better daily wellness.
@@ -28,23 +28,23 @@ Medico Tracker is a modern health management platform built using React, Node.js
 
 ## 💻 Tech Stack 
 
- -**Frontend **: React.js, Tailwind CSS, Vite, Material UI.​
+ - **Frontend **: React.js, Tailwind CSS, Vite, Material UI.​
 
--**Backend**: Node.js, Express.js, Socket.IO.​
+- **Backend**: Node.js, Express.js, Socket.IO.​
 
--**Database**: MongoDB Atlas (sessions and user data).​
+- **Database**: MongoDB Atlas (sessions and user data).​
 
--**Auth**: JWT-like token, Google OAuth.​
+- **Auth**: JWT-like token, Google OAuth.​
 
--**Notification**: Node-cron, Nodemailer.​
+- **Notification**: Node-cron, Nodemailer.​
 
--**Charting**: Chart.js, Recharts.​
+- **Charting**: Chart.js, Recharts.​
 
--**CI/CD**: GitHub Actions.​
+- **CI/CD**: GitHub Actions.​
 
--**Hosting**: Render.​
+- **Hosting**: Render.​
 
-##🔧 How It Works
+## 🔧 How It Works
 
 Register or log in using email/password or Google OAuth.​
 
@@ -62,7 +62,7 @@ Data is securely stored and privacy protected.​​
 
 ## 🚀 Getting Started
 
-###Prerequisites
--Node.js (v14+)
--npm
--MongoDB Atlas (for sessions/auth data)
+### Prerequisites
+- Node.js (v14+)
+- npm
+- MongoDB Atlas (for sessions/auth data)
