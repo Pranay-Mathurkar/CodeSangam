@@ -58,3 +58,7 @@ Node.js (v14+)
 npm
 
 MongoDB Atlas (for sessions/auth data)
+
+git clone https://github.com/Pranay-Mathurkar/CodeSangam.git
+cd CodeSangam
+npm install
