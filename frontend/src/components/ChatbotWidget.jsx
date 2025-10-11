@@ -24,7 +24,7 @@ export default function ChatbotWidget({ userId, open, onClose }) {
     const typingIndex = messages.length + 1;
 
     try {
-      const res = await axios.post("http://localhost:3000/chatbot", {
+      const res = await axios.post("https://medico-backend-hjxm.onrender.com/chatbot", {
         message: input.trim(),
         userId
       });
